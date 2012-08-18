@@ -1,6 +1,11 @@
 var express = require('express'),
+	mongoose = require("mongoose"),
 	RedisStore = require('connect-redis')(express),
+	mongo_uri = (process.env.MONGOLAB_URI || "mongodb://localhost:27017/maelstrom"),
 	redis;
+
+// Connect to mongodb
+mongoose.connect(mongo_uri);
 
 // If we're on Heroku and have a redistogo URL, use that. Otherwise, we're local, so use a local instance.
 if (process.env.REDISTOGO_URL) {

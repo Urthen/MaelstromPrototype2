@@ -2,6 +2,5 @@
 *.jade
 static/*
 logs
-db
 *.rdb
 README.md
