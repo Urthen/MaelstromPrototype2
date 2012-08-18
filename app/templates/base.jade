@@ -45,10 +45,10 @@ html(lang="en")
 					if (user)
 						.loginstatus Logged in as 
 							span.username= user.name 
-							a(href="/logout").logout Logout
+							a(href="/logout").button.logout Logout
 					else
 						.loginstatus Not logged in. 
-							a(href="/new") Sign up or sign in
+							a(href="/new").button.login Sign up or sign in
 
 					h1 
 						a(href="/") Project Maelstrom

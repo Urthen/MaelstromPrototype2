@@ -1,0 +1,59 @@
+.header {
+	top: 0;
+	left: 0;
+	right: 0;
+	height: @header-height;
+	padding: 0 30px;
+	background: @header-bg;
+	color: @header-text;
+	position: absolute;
+	z-index: 50;
+
+	.innerheader {
+		width: @main-width;
+		margin-left: (100% - @main-width) / 2;
+		position: relative;
+	}
+
+	h1 {
+		padding: 0;
+		margin: 3px;
+		font-size: 1.5em;
+		a, a:visited {
+			color: @header-text;
+		}
+		a:hover, a:active {
+			color: lighten(@header-text, 10%);
+		}
+	}
+
+	.loginstatus {
+		position: absolute;
+		right: 25px;
+		bottom: 0;
+		margin-bottom: 5px;
+
+		.logout {
+			margin-left: 10px;
+		}
+	}
+}
+
+.main {
+	width: @main-width;
+	margin-left: (100% - @main-width) / 2;
+	top: @header-height;
+	position: relative;
+	background: @content-bg;
+	border-radius: 0 0 @content-border-bottom-radius @content-border-bottom-radius;
+}
+
+.content {
+	padding: 25px 40px;
+	overflow: hidden;
+}
+
+.footer {
+	text-align: center;
+	padding: 25px 0 50px;
+}

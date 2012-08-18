@@ -1,0 +1,15 @@
+.button {
+	background: @highlight-bg;
+	color: @highlight-text;
+	padding: @button-padding;
+	border-radius: @button-radius;
+
+	&:visited {
+		color: @highlight-text;
+	}
+
+	&:active, &:hover {
+		color: lighten(@highlight-text, 10%);
+		background: lighten(@highlight-bg, 10%);
+	}
+}

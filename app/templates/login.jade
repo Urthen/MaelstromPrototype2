@@ -1,0 +1,27 @@
+extends base
+
+block styles
+	mixin style('login')
+
+block content
+	.leftBlurb
+		h3 New User?
+		p Hello, new user! You look like you could use a Maelstrom Network account. Why don't you get started by connecting with one of our various and sundry foreign credential providers? You probably already have one of these. If you have more than one, you will be presented with the opportunity to attach more later.
+	.rightBlurb
+		h3 Already on our network?
+		p Welcome back! Just click one of the authentication providers below - make sure it's one you've already connected to your account!
+
+	.loginbuttons
+		a(href="/auth/facebook/").facebook_login.login.button Sign in with Facebook!
+		a(href="/auth/twitter/").twitter_login.login.button Sign in with Twitter!
+
+	.explain
+		h4 What is the Maelstrom Network?
+		p The Maelstrom Network is a new type of authentication network that puts your identity back into your hands. By clicking one of the sign in buttons above, 
+			| you will have an account created and linked for you. There's not a lot else that happens right now unless you also visit the 
+			a(href="http://nodetest.projectmaelstrom.com") test application
+			| . Part of our promise to you is we will
+			| never reveal any private information or data without your express permission. Right now, we only collect and provide your name.
+		p Please see 
+			a(href="http://www.projectmaelstrom.com") our home page
+			|  for more information, including descriptions of what the service will be in future iterations.

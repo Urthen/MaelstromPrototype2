@@ -5,8 +5,9 @@ var indexController = require('./controllers/index'),
 
 module.exports = function(app){
 
-	// Index routes
-	app.get('/', indexController.renderIndex);
+	// Landing page routes
+	app.get('/', helpers.requireLogin, indexController.renderIndex);
+	app.get('/login', indexController.renderLogin);
 
 	// Authorize credentials routes
 	app.get('/auth/facebook', credential.catchRedirectArgs, passport.authenticate('facebook'));

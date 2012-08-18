@@ -2,14 +2,5 @@ extends base
 
 block content
 
-	h2 WELCOME TO PROJECT MAELSTROM PROTOTYPE 2
-
-	if user
-		h3 Hi, welcome back, #{user.name}!
-	else
-		h3 Log in below!
-		.button
-			a(href="/auth/facebook") Facebook Login
-
-		.button	
-			a(href="/auth/twitter") Twitter Login
+	h3 Hi, welcome back, #{user.name}!
+	
