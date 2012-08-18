@@ -1,0 +1,21 @@
+{
+    "name": "maelstrom-proto2"
+  , "version": "0.0.1"
+  , "private": true
+  , "engines": {
+        "node": ">= 0.8.0 < 0.9.0"
+    }
+  , "dependencies": {
+      "express": "3.0.0rc2",
+      "deferred": "0.5.6",
+      "mongodb": "1.1.4",
+      "mongoose": "3.0.0",
+      "express-mongoose": "0.0.5",
+      "jade": "0.27.2",
+      "passport": "0.1.12",
+      "passport-facebook": "0.1.4",
+      "passport-twitter": "0.1.4",
+      "redis": ">= 0.7.2",
+      "connect-redis": "1.4.1"
+  }
+}
