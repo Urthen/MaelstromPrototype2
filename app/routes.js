@@ -1,6 +1,7 @@
 var indexController = require('./controllers/index'),
 	newUserController = require('./controllers/newuser'),
 	credentialController = require('./controllers/credential'),
+	mailHelpController = require('./controllers/mailhelper'),
 	profileController = require('./controllers/profile'),
 	passport = require('passport'),
 	helpers = require('./controllers/helpers');
@@ -30,4 +31,10 @@ module.exports = function(app){
 
 	// User Profile Management
 	app.get('/profile', helpers.requireLogin, profileController.showProfile);
+
+	// Preview Emails (not in production, obviously)
+	if (process.env.NODE_ENV !== 'production') {
+		app.post('/mailtest/preview', mailHelpController.previewEmail);
+		app.post('/mailtest/send', mailHelpController.sendEmail);
+	}
 };

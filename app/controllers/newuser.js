@@ -27,13 +27,13 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 	var email = req.body.email;
 	if (email) {
 		req.user.email = email;
-		mailer.sendOne({
+		mailer.sendTemplate("welcome", {
 				from: "Project Maelstrom <welcome@projectmaelstrom.com>",
 				to: email,
 				subject: "Welcome to Maelstrom",
-				html: "Welcome to Project Maelstrom. Please come back and visit us."
+			}, {
+				returnUrl: "http://prototype.projectmaelstrom.com/"
 			}, function(err){
-				console.log(err);
 				req.user.temporary = false;
 				req.user.save(function(err) {
 					next(err);

@@ -1,0 +1,8 @@
+# Modules not necessary on production 
+node_modules/grunt-less
+
+# LESS is not used on production
+static/less
+
+# Random files
+DevProcfile
