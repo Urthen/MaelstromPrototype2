@@ -15,7 +15,7 @@ function authenticateUser(req, accessToken, refreshToken, profile, done) {
 		}
 	} else {
 		// Not currently logged in; if an existing user is found, log them in.
-		User.findByCredential(profile)(function(user){
+		User.findOrAddByCredential(profile)(function(user){
 			done(null, user);
 		}).end();
 	}

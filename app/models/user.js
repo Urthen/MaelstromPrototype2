@@ -13,15 +13,70 @@ var mongoose = require('mongoose'),
 mongoose.model('ForeignCredential', ForeignCredential);
 var ForeignCredentialModel = mongoose.model('ForeignCredential'),
 
+// Schema for user email addresses and whether or not they are verified
+	UserEmail = new Schema({
+		email: String,
+		verified: Date
+	});
+
+mongoose.model('UserEmail', UserEmail);
+var UserEmailModel = mongoose.model('UserEmail'),
+
 // Primary schema for user objects
 	User = new Schema({
 		name: String,
-		email: String,
+		emails: [UserEmail],
 		credentials: [ForeignCredential],
 		created: {type: Date, default: Date.now},
 		accessed: {type: Date, default: Date.now},
 		temporary: {type: Boolean, default: true}
 	});
+
+// Determine if a user already has this email attached
+User.methods.hasEmail = function hasEmail (email) {
+	for (var i in this["emails"]) {
+		if (this["emails"][i].email === email) { return true; }
+	}
+	return false;
+};
+
+User.statics.findByEmail = function findByEmail (email) {
+	var query = {
+		"emails.email": email
+	}, def = deferred();
+
+	this.pFindOne(query)(function(user) {
+		def.resolve(user);
+	}).end();
+	return def.promise;
+};
+
+// Add an email address
+User.methods.addEmail = function addEmail (email) {
+	var def = deferred(),
+		that = this;
+
+	// If they've already added the email, just allow it immediately.
+	if (this.hasEmail(email)) {
+		def.resolve(true);
+	} else {
+		// Check to make sure that no other user has this email
+		mongoose.model("User").findByEmail(email)(function (user) {
+			if (user) {
+				// If they do, return false.
+				def.resolve(false);
+			} else {
+				// Otherwise, add the email and return true.
+				var emailObj = new UserEmailModel();
+				emailObj.email = email;
+				that["emails"].push(emailObj);
+				def.resolve(true);
+			}
+		}).end();
+	}
+
+	return def.promise;
+};
 
 // Add a given credential we've just connected with to a user.
 User.methods.addCredential = function addCredential (profile) {
@@ -59,7 +114,7 @@ User.methods.listCredentials = function listCredentials () {
 };
 
 // Find a user by given credential
-User.statics.findByCredential = function findByCredential (profile) {
+User.statics.findOrAddByCredential = function findByCredential (profile) {
 	var query = {},
 		def = deferred();
 

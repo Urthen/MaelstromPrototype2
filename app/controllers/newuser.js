@@ -12,7 +12,7 @@ exports.newUser = function newUser (req, res) {
 		return;
 	}
 
-	res.render("newuser");
+	res.render("newuser", {emailTaken: false});
 };
 
 exports.newUserConfirm = function newUserConfirm (req, res, next) {
@@ -26,19 +26,29 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 
 	var email = req.body.email;
 	if (email) {
-		req.user.email = email;
-		mailer.sendTemplate("welcome", {
-				from: "Project Maelstrom <welcome@projectmaelstrom.com>",
-				to: email,
-				subject: "Welcome to Maelstrom",
-			}, {
-				returnUrl: "http://prototype.projectmaelstrom.com/"
-			}, function(err){
-				req.user.temporary = false;
-				req.user.save(function(err) {
-					next(err);
-				});
-			});
+		req.user.addEmail(email)(function (valid) {
+			if (valid) {
+				mailer.sendTemplate("welcome", {
+						from: "Project Maelstrom <welcome@projectmaelstrom.com>",
+						to: email,
+						subject: "Welcome to Maelstrom",
+					}, {
+						returnUrl: "http://prototype.projectmaelstrom.com/"
+					}, function(err){
+						req.user.temporary = false;
+						req.user.save(function(err) {
+							next(err);
+						});
+					});
+			} else {
+				res.render("newuser", {emailTaken: true});
+			}
+		}).end();
+	} else {
+		req.user.temporary = false;
+		req.user.save(function(err) {
+			next(err);
+		});
 	}
 };
 

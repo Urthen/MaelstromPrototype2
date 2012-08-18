@@ -7,4 +7,21 @@ block prepend nav
 block content
 
 	h2 #{user.name}
-	
+
+	.inforow
+		if user.emails.length > 0
+			if user.emails.length > 1
+				h5.infolabel Emails:
+				ul
+					each email in user.emails
+						li
+							.info email.email
+
+			else		
+				label.infolabel Email: 
+				- var email = user.emails[0]
+				span.info= email.email
+				unless email.verified
+					span.infonote  Unverified! Check your email!
+		else
+			span.infomissing No emails attached - you should add one in case you need to recover your account!
