@@ -21,13 +21,13 @@ exports.previewEmail = function previewMail (req, res) {
 			if (err) {
 				res.end("Error: " + err);
 			} else {
-				if (vars.useText && vars.useText == 'true') {
+				if (vars.useText && vars.useText === 'true') {
 					res.end(text);
 				} else {
 					res.end(html);
 				}
 			}
-		}) 
+		});
 	} catch(e) {
 		res.end("Unknown error: " + e);
 	}
@@ -36,8 +36,8 @@ exports.previewEmail = function previewMail (req, res) {
 exports.sendEmail = function sendEmail (req, res) {
 	var vars = getSettingsFromReq(req);
 
-	if (vars.fromEmail === undefined || vars.toEmail === undefined 
-		|| vars.emailSubject === undefined || vars.templateName === undefined) {
+	if (vars.fromEmail === undefined || vars.toEmail === undefined ||
+		vars.emailSubject === undefined || vars.templateName === undefined) {
 		res.end("fromEmail, toEmail, emailSubject, and templateName are all required parameters.");
 		return;
 	}
@@ -61,7 +61,7 @@ exports.sendEmail = function sendEmail (req, res) {
 					}
 				});
 			}
-		}) 
+		});
 	} catch(e) {
 		res.end("Unknown error: " + e);
 	}
