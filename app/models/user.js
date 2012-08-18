@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
 		type: {type: String, index: true},
 		created: {type: Date, default: Date.now},
 		name: String
-	})
+	});
 
 mongoose.model('ForeignCredential', ForeignCredential);
 var ForeignCredentialModel = mongoose.model('ForeignCredential'),
@@ -27,21 +27,21 @@ User.methods.addCredential = function addCredential (profile) {
 	if (this.hasCredential(profile.provider, profile.id)) {
 		return false;
 	}
-	credential = new ForeignCredentialModel();
+	var credential = new ForeignCredentialModel();
 	credential.uid = profile.id;
 	credential.type = profile.provider;
 	credential.name = profile.displayName;
-	this["credentials"].push(credential)
+	this["credentials"].push(credential);
 	return true;
-}
+};
 
 // Determine if a given user has a credential.
 User.methods.hasCredential = function hasCredential (provider, uid) {
 	for (var i in this["credentials"]) {
-		if (this["credentials"][i].type === provider && (!uid || this["credential"][i].uid === uid)) return true;
+		if (this["credentials"][i].type === provider && (!uid || this["credential"][i].uid === uid)) { return true; }
 	}
 	return false;
-}
+};
 
 // Return a dictionary of credential lists by provider
 User.methods.listCredentials = function listCredentials () {
@@ -50,19 +50,20 @@ User.methods.listCredentials = function listCredentials () {
 	
 	for (var i in this["credentials"]) {
 		credential = this["credentials"][i];
-		if (output[credential.type] === undefined) output[credential.type] = [];
+		if (output[credential.type] === undefined) { output[credential.type] = []; }
 		output[credential.type].push(credential);
 	}
 
 	return credential;
-}
+};
 
 // Find a user by given credential
 User.statics.findByCredential = function findByCredential (profile) {
-	var query = {}
-		query["credential.uid"] = profile.id,
-		query["credential.type"] = profile.provider,
+	var query = {},
 		def = deferred();
+
+	query["credential.uid"] = profile.id;
+	query["credential.type"] = profile.provider;
 
 	this.pFindOne(query)(function(user) {
 		if (user) {
@@ -78,7 +79,7 @@ User.statics.findByCredential = function findByCredential (profile) {
 	}).end();
 
 	return def.promise;
-}
+};
 
 // Add any additional promisified functionality here.
 mongoose.model('User', User);

@@ -44,14 +44,14 @@ passport.serializeUser(function(user, done) {
 //Retrieves the user from the session
 passport.deserializeUser(function(id, done) {
 	User.findById(id, function(err, user) {
-		if (err) return done(err);
+		if (err) { return done(err); }
 		done(null, user);
 	});
 });
 
 exports.catchRedirectArgs = function(req, res, next) {
 	var redirect = decodeURIComponent(req.param('redirect', ''));
-	if(redirect != '') {
+	if(redirect !== '') {
 		req.session.redirect = redirect;
 	} 
 	next();
@@ -76,5 +76,5 @@ exports.disconnect = function (req, res) {
 	req.user.credential.id(req.params.id).remove();
 	req.user.save(function(err) {
 		res.redirect('/');
-	})
+	});
 };
