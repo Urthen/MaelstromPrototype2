@@ -5,6 +5,9 @@ var express = require("express"),
 // Set up the settings
 require("./app/settings")(app);
 
+// Set up the models
+require("./app/models/");
+
 // Set up the router
 require("./app/routes")(app);
 

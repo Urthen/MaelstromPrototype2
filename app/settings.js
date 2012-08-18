@@ -34,9 +34,9 @@ module.exports = function (app) {
 			}
 		});
 
-		// // Setup passport (actual auth schemes are set up as part of ./auth.js)
-		// app.use(passport.initialize());
-		// app.use(passport.session());
+		// Setup passport (actual auth schemes are set up as part of ./controllers/credential.js)
+		app.use(passport.initialize());
+		app.use(passport.session());
 
 		var isProduction = process.env.NODE_ENV === 'production';
 
