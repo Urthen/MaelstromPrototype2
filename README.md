@@ -12,8 +12,8 @@ Prerequisites: You must have installed [node.js](http://www.nodejs.org) and [nod
 2. Install [nodemon](https://github.com/remy/nodemon/) with `npm install -g nodemon` (you may need sudo)
 3. Install [grunt](https://github.com/cowboy/grunt) with `npm install -g grunt` (again, may need sudo)
 4. Install [redis](http://redis.io/download). We suggest you also run the following from the directory you ran `make` from. This will allow you to run `redis-server` and `redis-cli` from anywhere.
-	ln -s src/redis-server ~/bin/redis-server
-	ln -s src/redis-cli ~/bin/redis-cli
+    ln -s src/redis-server ~/bin/redis-server
+    ln -s src/redis-cli ~/bin/redis-cli
 5. Clone the repository locally
 6. Run `npm install -d` at a command line in the repository folder to install dependancies
 7. Retrieve the .env file neccesary to run foreman from a fellow teammember
@@ -21,7 +21,7 @@ Prerequisites: You must have installed [node.js](http://www.nodejs.org) and [nod
 Running the app
 ---------------
 
-Start up redis by running `redis-server` in one terminal window. In another, from the repository directory, run the Maelstrom instance itself with `foreman start -f DevProcfile`
+Start up redis by running `redis-server redis.conf` in the repo directory. In another terminal window, run the Maelstrom instance itself with `foreman start -f DevProcfile`
 
 Testing the app
 ---------------
