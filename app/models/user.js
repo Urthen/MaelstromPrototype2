@@ -38,7 +38,7 @@ User.methods.addCredential = function addCredential (profile) {
 // Determine if a given user has a credential.
 User.methods.hasCredential = function hasCredential (provider, uid) {
 	for (var i in this["credentials"]) {
-		if (this["credentials"][i].type === provider && (!uid || this["credential"][i].uid === uid)) { return true; }
+		if (this["credentials"][i].type === provider && (!uid || this["credentials"][i].uid === uid)) { return true; }
 	}
 	return false;
 };

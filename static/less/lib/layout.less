@@ -54,6 +54,7 @@
 	color: @nav-text;
 	padding-bottom: 15px;
 	border-bottom-right-radius: 15px;
+	border-left: 1px solid @content-bg;
 
 	a, a:visited {
 		color: @nav-text;
@@ -70,6 +71,8 @@
 
 		&.selected {
 			font-weight: bold;
+			border-left: 5px solid @content-bg;
+			padding: 5px 10px;
 			background: lighten(@nav-background, 5%);
 		}
 	}
@@ -81,6 +84,7 @@
 }
 
 .footer {
+	clear: both;
 	text-align: center;
 	padding: 25px 0 50px;
 }

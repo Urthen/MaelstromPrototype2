@@ -58,9 +58,10 @@ html(lang="en")
 				block nav
 					- var menu = {}; menu[location] = 'selected';
 					a.item(href="/", class=menu["Home"]) Home
-					a.item(href="/", class=menu["Manage"]) Manage Apps and Subscriptions
-					a.item(href="/", class=menu["Transactions"]) View Balance and History
-					a.item(href="/", class=menu["Develop"]) Develop Applications
+					a.item(href="/profile", class=menu["Profile"]) Profile
+					a.item(href="/manage", class=menu["Manage"]) Manage Applications
+					// a.item(href="/transactions", class=menu["Transactions"]) View Balance and History
+					a.item(href="/dev", class=menu["Develop"]) Develop Applications
 			.content
 				block content
 			.footer
