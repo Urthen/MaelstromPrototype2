@@ -1,6 +1,7 @@
 var indexController = require('./controllers/index'),
 	newUserController = require('./controllers/newuser'),
 	credentialController = require('./controllers/credential'),
+	profileController = require('./controllers/profile'),
 	passport = require('passport'),
 	helpers = require('./controllers/helpers');
 
@@ -26,4 +27,7 @@ module.exports = function(app){
 	// Logout/disconnect from credentials
 	app.get('/logout', credentialController.catchRedirectArgs, credentialController.logout);
 	app.get('/auth/disconnect/:id', helpers.requireLogin, credentialController.disconnect);	
+
+	// User Profile Management
+	app.get('/profile', helpers.requireLogin, profileController.showProfile);
 };

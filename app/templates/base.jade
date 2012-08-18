@@ -10,12 +10,12 @@ html(lang="en")
 		meta(charset="utf-8")
 		meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
 		meta(name="viewport", content="width=device-width,initial-scale=1")
-		
-		title Project Maelstrom
+		block title
+			title Maelstrom
 		meta(name="description", content="There's an ocean of data out there. Let's help you funnel it.")
-		meta(property="og:title", content="Project Maelstrom")
+		meta(property="og:title", content="Maelstrom")
 		meta(property="og:url", content="http://prototype.projectmaelstrom.com")
-		meta(property="og:site_name", content="Project Maelstrom")
+		meta(property="og:site_name", content="Maelstrom Network")
 		meta(property="og:description", content="There's an ocean of data out there. Let's help you funnel it.")		
 		
 		block styles
@@ -51,17 +51,12 @@ html(lang="en")
 							a(href="/new").button.login Sign up or sign in
 
 					h1 
-						a(href="/") Project Maelstrom
+						a(href="/") Maelstrom Network
 		.main
 			.nav
-				- var location;
+				- var location, sublocation;
 				block nav
-					- var menu = {}; menu[location] = 'selected';
-					a.item(href="/", class=menu["Home"]) Home
-					a.item(href="/profile", class=menu["Profile"]) Profile
-					a.item(href="/manage", class=menu["Manage"]) Manage Applications
-					// a.item(href="/transactions", class=menu["Transactions"]) View Balance and History
-					a.item(href="/dev", class=menu["Develop"]) Develop Applications
+					include menu
 			.content
 				block content
 			.footer

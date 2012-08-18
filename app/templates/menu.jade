@@ -1,0 +1,23 @@
+mixin menuitem(name, title, url)
+	a.item(href=url, class=menu[name])= title
+
+mixin submenuitem(name, title, url)
+	a.item(href=url, class=submenu[name])= title
+
+- var menu = {}; menu[location] = 'selected';
+- var submenu = {}; submenu[sublocation] = 'selected';
+
+// Actual menu follows
+mixin menuitem("Home", "Home", "/")
+mixin menuitem("Profile", "Profile", "/profile")				
+if menu["Profile"]
+	.subnav	
+		mixin submenuitem("Display", "My Info", "/profile")
+		mixin submenuitem("Edit", "Edit Info", "/profile/edit")
+		mixin submenuitem("Accounts", "Linked Accounts", "/profile/linked")
+mixin menuitem("Manage", "Manage Applications", "/apps")				
+if menu["Manage"]
+	.subnav				
+mixin menuitem("Dev", "Develop Applications", "/dev")
+if menu["Dev"]
+	.subnav
