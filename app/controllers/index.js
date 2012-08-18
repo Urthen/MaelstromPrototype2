@@ -3,5 +3,14 @@ exports.renderIndex = function(req, res) {
 };
 
 exports.renderLogin = function(req, res) {
+	if (req.user) {
+		if (req.user.temporary) {
+			res.redirect('/newuser');
+			return;
+		} else {
+			res.redirect('/');
+		}
+	}
+
 	res.render('login');
 };

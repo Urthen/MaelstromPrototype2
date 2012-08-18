@@ -19,7 +19,7 @@ var ForeignCredentialModel = mongoose.model('ForeignCredential'),
 		credentials: [ForeignCredential],
 		created: {type: Date, default: Date.now},
 		accessed: {type: Date, default: Date.now},
-		temporary: {type: Boolean, default: false}
+		temporary: {type: Boolean, default: true}
 	});
 
 // Add a given credential we've just connected with to a user.
@@ -62,8 +62,8 @@ User.statics.findByCredential = function findByCredential (profile) {
 	var query = {},
 		def = deferred();
 
-	query["credential.uid"] = profile.id;
-	query["credential.type"] = profile.provider;
+	query["credentials.uid"] = profile.id;
+	query["credentials.type"] = profile.provider;
 
 	this.pFindOne(query)(function(user) {
 		if (user) {

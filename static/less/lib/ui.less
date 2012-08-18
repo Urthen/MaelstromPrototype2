@@ -12,4 +12,47 @@
 		color: lighten(@highlight-text, 10%);
 		background: lighten(@highlight-bg, 10%);
 	}
+
+	&.major {
+		font-size: 1.5em;
+	}
+
+	&.minor {
+		font-size: 0.9em;
+	}
+}
+
+.button.affirmative {
+	background: @affirmative-bg;
+	color: @affirmative-text;
+	border: 1px solid @affirmative;
+
+	&:visited {
+		color: @affirmative-text;
+	}
+
+	&:active, &:hover {
+		color: lighten(@affirmative-text, 10%);
+		background: lighten(@affirmative-bg, 10%);
+	}
+}
+
+.button.negative {
+	background: @negative-bg;
+	color: @negative-text;
+	border: 1px solid @negative;
+
+	&:visited {
+		color: @negative-text;
+	}
+
+	&:active, &:hover {
+		color: lighten(@negative-text, 10%);
+		background: lighten(@negative-bg, 10%);
+	}
+}
+
+.hint {
+	color: lighten(@text-color, 40%);
+	font-size: 0.8em;
 }

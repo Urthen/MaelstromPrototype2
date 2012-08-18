@@ -1,0 +1,43 @@
+extends base
+
+block styles
+	mixin style('login')
+
+block append scripts
+	script(type="text/javascript")
+		$(document).ready(function() {
+			$('#CreateButton').click(function() {
+				$("#EmailForm").submit();			
+				return false;
+			});
+		});
+
+block content
+	h3 Hello there, #{user.name}!
+
+	.leftBlurb
+		p
+			b It looks like this is your first time logging in.
+			|  We've automatically created a Maelstrom account for you. If you've never heard of Maelstrom, and want some more information
+			| before you continue, why don't you 
+			a(href="/pledge") read our pledge.
+		p
+			form#EmailForm(method="POST", action="/newuser/confirm")
+				input(type="hidden", name="_csrf", value=token)
+				label(for="email") Email 
+					span.hint (suggested)
+					| : 
+				input(name="email")
+
+			a#CreateButton(href="#").button.affirmative.major Yes, create my account!
+			a(href="/newuser/decline/").button.negative.minor No, delete my information
+
+	.rightBlurb
+		p If creating a new account is not what you meant to do, we can delete it and pretend it never happened.
+			| You won't be able to log into any applications at this time, but we won't remember any of your data from this login.
+			| If you do want your account, however, we want to make sure we're out of your way. We recommend you enter your email address below.
+			| We'll send you a one-time email to remind you about Maelstrom, provide some more information and helpful links, and provide a link
+			| to confirm your email address. 
+		p No pressure to give us your email just yet, but we know you're busy and don't want to read all this right now
+			| and don't want you to forget. In the meantime, you'll be up and running with whatever it is you're doing. 
+			| So what are you waiting for, lets get started!

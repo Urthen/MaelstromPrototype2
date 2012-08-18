@@ -1,5 +1,4 @@
-var util = require('util'),
-	passport = require('passport'),
+var passport = require('passport'),
 	FacebookStrategy = require('passport-facebook').Strategy,
 	TwitterStrategy = require('passport-twitter').Strategy,
 	mongoose = require('mongoose'),
@@ -58,13 +57,17 @@ exports.catchRedirectArgs = function(req, res, next) {
 };
 
 exports.redirectAfterLogin = function(req, res) {
-	var redirect = req.session.redirect;
-	if (req.session.redirect) {
-		delete req.session.redirect;
-		res.redirect(redirect);
-		return;
+	if (req.user.temporary) {
+		res.redirect('/newuser');
+	} else {
+		var redirect = req.session.redirect;
+		if (req.session.redirect) {
+			delete req.session.redirect;
+			res.redirect(redirect);
+			return;
+		}
+		res.redirect('/');
 	}
-	res.redirect('/');
 };
 
 exports.logout = function (req, res) {
