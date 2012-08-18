@@ -18,7 +18,13 @@ module.exports = function(grunt) {
         options: {
           yuicompress: true
         }
-
+      },
+      login: {
+        src: ['static/less/login.less'],
+        dest: 'static/css/login.css',
+        options: {
+          yuicompress: true
+        }
       }
     },
 
