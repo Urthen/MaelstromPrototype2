@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+  grunt.loadNpmTasks('grunt-less');
 
   // Project configuration.
   grunt.initConfig({
@@ -8,6 +9,17 @@ module.exports = function(grunt) {
 
     lint: {
       files: ["app.js", "test/**/*.js", "app/**/*.js"]
+    },
+
+    less: {
+      index: {
+        src: ['static/less/index.less'],
+        dest: 'static/css/index.css',
+        options: {
+          yuicompress: true
+        }
+
+      }
     },
 
     jshint: {
@@ -30,6 +42,6 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask("default", "lint test");
+  grunt.registerTask("default", "lint test less");
 
 };

@@ -26,7 +26,9 @@ Start up redis by running `redis-server redis.conf` in the repo directory. In an
 Testing the app
 ---------------
 
-Before committing, test the app by running `grunt` in the repo directory. This will run unit tests and lint the javascript. Correct any tests and lint failures - style is important!
+Before committing, test the app by running `grunt` in the repo directory. This will run lint the javascript, test the javascript, and compile and compress the LESS into CSS for production. Correct any failures!
+
+If you didn't change any app code, only LESS, you can just run `grunt lessmin` to recompile and compress the LESS only. If you need to test LESS output, you can run `grunt less` which will output the CSS files but not minify them - don't commit like this!
 
 Tips
 ----

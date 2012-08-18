@@ -38,11 +38,14 @@ module.exports = function (app) {
 		// app.use(passport.initialize());
 		// app.use(passport.session());
 
+		var isProduction = process.env.NODE_ENV === 'production';
+
 		// Automatically make the token and user variables available to the template
 		// This must appear after app.use(passport.session());
 		app.use(function (req, res, next) {
 			app.locals.token = req.session._csrf;
 			app.locals.user = req.user;
+			app.locals.production = isProduction;
 			next();
 		});
 
