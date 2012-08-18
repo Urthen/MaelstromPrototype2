@@ -16,6 +16,7 @@ var ForeignCredentialModel = mongoose.model('ForeignCredential'),
 // Primary schema for user objects
 	User = new Schema({
 		name: String,
+		email: String,
 		credentials: [ForeignCredential],
 		created: {type: Date, default: Date.now},
 		accessed: {type: Date, default: Date.now},
