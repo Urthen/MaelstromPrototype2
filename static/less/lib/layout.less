@@ -48,6 +48,33 @@
 	border-radius: 0 0 @content-border-bottom-radius @content-border-bottom-radius;
 }
 
+.nav {
+	float: left;
+	background: @nav-background;
+	color: @nav-text;
+	padding-bottom: 15px;
+	border-bottom-right-radius: 15px;
+
+	a, a:visited {
+		color: @nav-text;
+	}
+
+	a:hover, a:active {
+		color: @highlight-text;
+		background: @highlight-bg;
+	}
+
+	.item {
+		display: block;
+		padding: 5px 15px;
+
+		&.selected {
+			font-weight: bold;
+			background: lighten(@nav-background, 5%);
+		}
+	}
+}
+
 .content {
 	padding: 25px 40px;
 	overflow: hidden;

@@ -53,6 +53,14 @@ html(lang="en")
 					h1 
 						a(href="/") Project Maelstrom
 		.main
+			.nav
+				- var location;
+				block nav
+					- var menu = {}; menu[location] = 'selected';
+					a.item(href="/", class=menu["Home"]) Home
+					a.item(href="/", class=menu["Manage"]) Manage Apps and Subscriptions
+					a.item(href="/", class=menu["Transactions"]) View Balance and History
+					a.item(href="/", class=menu["Develop"]) Develop Applications
 			.content
 				block content
 			.footer
