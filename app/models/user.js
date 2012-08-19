@@ -33,11 +33,11 @@ var UserEmailModel = mongoose.model('UserEmail'),
 	});
 
 // Determine if a user already has this email attached
-User.methods.hasEmail = function hasEmail (email) {
+User.methods.getEmail = function hasEmail (email) {
 	for (var i in this["emails"]) {
-		if (this["emails"][i].email === email) { return true; }
+		if (this["emails"][i].email === email) { return this["emails"][i].email; }
 	}
-	return false;
+	return null;
 };
 
 User.statics.findByEmail = function findByEmail (email) {
@@ -54,23 +54,24 @@ User.statics.findByEmail = function findByEmail (email) {
 // Add an email address
 User.methods.addEmail = function addEmail (email) {
 	var def = deferred(),
-		that = this;
+		that = this,
+		existing = this.getEmail(email);
 
 	// If they've already added the email, just allow it immediately.
-	if (this.hasEmail(email)) {
-		def.resolve(true);
+	if (existing) {
+		def.resolve(existing);
 	} else {
 		// Check to make sure that no other user has this email
 		mongoose.model("User").findByEmail(email)(function (user) {
 			if (user) {
 				// If they do, return false.
-				def.resolve(false);
+				def.resolve(null);
 			} else {
 				// Otherwise, add the email and return true.
 				var emailObj = new UserEmailModel();
 				emailObj.email = email;
 				that["emails"].push(emailObj);
-				def.resolve(true);
+				def.resolve(emailObj);
 			}
 		}).end();
 	}

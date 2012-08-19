@@ -3,6 +3,7 @@ var indexController = require('./controllers/index'),
 	credentialController = require('./controllers/credential'),
 	mailHelpController = require('./controllers/mailhelper'),
 	profileController = require('./controllers/profile'),
+	emailVerificationController = require('./controllers/emailverify'),
 	passport = require('passport'),
 	helpers = require('./controllers/helpers');
 
@@ -31,6 +32,10 @@ module.exports = function(app){
 
 	// User Profile Management
 	app.get('/profile', helpers.requireLogin, profileController.showProfile);
+
+	// Email verification process
+	app.get('/email/verify/:id', helpers.requireLogin, emailVerificationController.verifyEmail);
+	app.get('/email/verify/send/:id', helpers.requireLogin, emailVerificationController.sendVerification);
 
 	// Preview Emails (not in production, obviously)
 	if (process.env.NODE_ENV !== 'production') {

@@ -22,6 +22,7 @@ block content
 				- var email = user.emails[0]
 				span.info= email.email
 				unless email.verified
-					span.infonote  Unverified! Check your email!
+					span.infonote  Unverified! 
+						a(href="/email/verify/send/" + email.id) Resend verification
 		else
 			span.infomissing No emails attached - you should add one in case you need to recover your account!

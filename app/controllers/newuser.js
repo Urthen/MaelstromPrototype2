@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+	emailverify = require('./emailverify'),
 	mailer = require('../mailer'),
 	User = mongoose.model('User');
 
@@ -26,20 +27,14 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 
 	var email = req.body.email;
 	if (email) {
-		req.user.addEmail(email)(function (valid) {
-			if (valid) {
-				mailer.sendTemplate("welcome", {
-						from: "Project Maelstrom <welcome@projectmaelstrom.com>",
-						to: email,
-						subject: "Welcome to Maelstrom",
-					}, {
-						returnUrl: "http://prototype.projectmaelstrom.com/"
-					}, function(err){
+		req.user.addEmail(email)(function (emailObj) {
+			if (emailObj) {
+				emailverify.sendWelcome(emailObj, req.user)(function(){
 						req.user.temporary = false;
 						req.user.save(function(err) {
 							next(err);
 						});
-					});
+					}).end();
 			} else {
 				res.render("newuser", {emailTaken: true});
 			}

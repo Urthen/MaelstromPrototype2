@@ -1,0 +1,19 @@
+body {
+	background: #374143;
+	padding: 0;
+	margin: 0;
+}
+
+#wrapper {
+	width: 90%;
+	margin-left: 5%;
+	height: 100%;
+	background: rgb(240,249,255);
+}
+
+#content {
+	padding: 20px;
+}
+
+/* copied from index.css */
+a{color:#bd2f23;text-decoration:none}a:visited{color:#bd2f23}a:hover,a:active{color:#e68279}a:focus{outline:thin dotted}a:hover,a:active{outline:0}

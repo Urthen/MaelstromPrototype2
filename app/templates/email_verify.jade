@@ -1,0 +1,18 @@
+extends base
+
+block content
+
+	h2 Email verification
+
+	if error
+		if completed
+			p The email address #{email} has already been verified. There is no need for further verification.
+		else
+			p There seems to be a problem determining what email address should be verified. If you copied this URL from your verification email,
+				| please double-check that you copied the entire URL.
+	else
+		if completed
+			p Success! We've verified #{email} as your account.
+		else
+			p Email verification has been sent to #{email} and should arrive momentarily. If you don't recieve the email, check your spam folder or
+				| ask to send the verification again.
