@@ -9,7 +9,7 @@ block content
 	h1 Linked Accounts
 
 	p We know you're #{user.name}... but who else are you around the web?
-	p Connect as many accounts from different services as you want. Log in as any of them.
+	p Connect as many accounts from different services as you want. Log in as any of them. Know we won't give out your private data.
 
 	h2 Currently Linked
 	each credentials, type in user.listCredentials()
@@ -21,8 +21,15 @@ block content
 			li= credential.name
 				if credential.account
 					span.hint  (#{credential.account})
+				if user.credentials.length > 1
+					a.button.minor(href="/auth/disconnect/" + credential.id, style="margin-left: 15px") Disconnect
+
+	if user.credentials.length == 1
+		p.hint You currently only have one linked account. You cannot unlink this as it would prevent you from logging in to Maelstrom. 
+			| To unlink the above account, first add another. If you wish to disable your Maelstorm account entirely, email us.
 
 	h2 Link More
+	p Sign into the appropriate service with the account you would like to connect to Maelstrom, then connect with the appropriate button below.
 	.actionbuttons
 		a(href="/auth/facebook/?redirect=/profile/linked").login.button Connect with Facebook!
 		a(href="/auth/twitter/?redirect=/profile/linked").login.button Connect with Twitter!

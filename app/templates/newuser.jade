@@ -18,22 +18,25 @@ block content
 	.leftBlurb
 		if messages.emailTaken
 			p
-				b Whoops... that email is already taken by another account.
+				strong Whoops... that email is already taken by another account.
 				|  Do you perhaps already have a Maelstrom account? If so, click "No, delete my information" and log into your existing
 				| account with another method, then link the account.
 			p Part of the concept of Maelstrom is that you only ever need one account for your entire online life. There's no need to ever create
 				| multiple Maelstrom accounts!
 		if messages.emailInvalid
 			p
-				p Whoops... that email looks invalid.
+				strong Whoops... that email looks invalid.
 		unless messages.emailInvalid || messages.emailTaken
 			p
-				b It looks like this is your first time logging in.
+				strong It looks like this is your first time logging in.
 				|  We've automatically created a Maelstrom account for you. If you've never heard of Maelstrom, and want some more information
 				| before you continue, why don't you 
 				a(href="/pledge") read our pledge.
-			p If you already have a Maelstorm account and meant to link this login to your existing account instead of creating a new one,
-				| click "No, delete my information" and log into your existing account with another method, then link the account.
+			p 
+				strong If you already have a Maelstorm account 
+				|  and meant to link this login to your existing account instead of creating a new one, click 
+				em "No, delete my information"
+				|  and log into your existing account with another method, then link the account.
 		p
 			form#EmailForm(method="POST", action="/newuser/confirm")
 				input(type="hidden", name="_csrf", value=token)

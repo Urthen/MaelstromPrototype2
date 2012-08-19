@@ -76,8 +76,8 @@ exports.logout = function (req, res) {
 };
 
 exports.disconnect = function (req, res) {
-	req.user.credential.id(req.params.id).remove();
+	req.user.credentials.id(req.params.id).remove();
 	req.user.save(function(err) {
-		res.redirect('/');
+		res.redirect(req.query.return || '/profile/linked');
 	});
 };
