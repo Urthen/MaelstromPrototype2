@@ -3,6 +3,7 @@
 	color: @highlight-text;
 	padding: @button-padding;
 	border-radius: @button-radius;
+	border: 1px solid darken(@highlight, 20%);
 
 	&:visited {
 		color: @highlight-text;
@@ -19,6 +20,8 @@
 
 	&.minor {
 		font-size: 0.9em;
+		padding: @button-padding / 2;
+		margin: @button-padding / 2;
 	}
 }
 
@@ -52,7 +55,28 @@
 	}
 }
 
+.indicator {
+	border-radius: @button-radius;
+	padding: @button-padding / 2;
+	margin: @button-padding / 2;
+	&.affirmative {
+		background: @affirmative-bg;
+		color: @affirmative-text;
+	}
+	&.negative {
+		background: @negative-bg;
+		color: @negative-text;
+	}
+}
+
 .hint {
 	color: lighten(@text-color, 40%);
 	font-size: 0.8em;
+}
+
+.actionbuttons {
+	margin-top: 15px;
+	.button {
+		margin-right: 10px;
+	}
 }

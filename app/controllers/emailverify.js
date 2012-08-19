@@ -2,23 +2,34 @@ var mailer = require('../mailer'),
 	crypto = require('crypto');
 
 function genEmailVerifyKey(email, user) {
-	shasum = crypto.createHash('sha1');
+	var shasum = crypto.createHash('sha1');
 	shasum.update("" + email.id);
 	shasum.update("" + user.id);
 	return shasum.digest('hex');
 }
 
-exports.sendVerification = function sendVerification(req, res) {
+function sendVerification (email, user) {
+	return mailer.sendTemplate("email_verify", {
+			from: "Project Maelstrom <welcome@projectmaelstrom.com>",
+			to: email.email,
+			subject: "Verify your email",
+		}, {
+			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user)
+		});
+}
+
+exports.sendVerification = sendVerification;
+
+exports.sendVerificationRoute = function sendVerificationRoute(req, res) {
 	var eid = req.params.id,
-		email,
-		shasum;
+		email;
 
 	if (!eid) {
-		console.log("email id missing from verification")
+		console.log("email id missing from verification");
 		res.render('email_verify', {
 			error: true,
 			completed: false
-		})
+		});
 		return;
 	}
 
@@ -28,30 +39,24 @@ exports.sendVerification = function sendVerification(req, res) {
 		res.render('email_verify', {
 			error: true,
 			completed: false
-		})
+		});
 		return;
 	} else if (email.verified) {
 		res.render('email_verify', {
 			error: true,
 			completed: true,
 			email: email.email
-		})
+		});
 	}
 
-	mailer.sendTemplate("email_verify", {
-			from: "Project Maelstrom <welcome@projectmaelstrom.com>",
-			to: email.email,
-			subject: "Verify your email",
-		}, {
-			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, req.user)
-		})(function() {
+	sendVerification(email, req.user)(function() {
 			res.render('email_verify', {
 				error: false,
 				completed: false,
 				email: email.email
-			})
-		});
-}
+			});
+		}).done();
+};
 
 exports.sendWelcome = function sendWelcome(email, user) {
 	return mailer.sendTemplate("welcome", {
@@ -61,19 +66,18 @@ exports.sendWelcome = function sendWelcome(email, user) {
 		}, {
 			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user)
 		});
-}
+};
 
-exports.verifyEmail = function verifyEmail(req, res) {
+exports.verifyEmailRoute = function verifyEmailRoute(req, res) {
 	var eid = req.params.id,
-		email,
-		shasum;
+		email;
 
 	if (!eid) {
-		console.log("email id missing from verification")
+		console.log("email id missing from verification");
 		res.render('email_verify', {
 			error: true,
 			completed: false
-		})
+		});
 		return;
 	}
 
@@ -83,14 +87,14 @@ exports.verifyEmail = function verifyEmail(req, res) {
 		res.render('email_verify', {
 			error: true,
 			completed: false
-		})
+		});
 		return;
 	} else if (req.query.key !== genEmailVerifyKey(email, req.user)) {
 		console.log("email key isn't correct for given email");
 		res.render('email_verify', {
 			error: true,
 			completed: false
-		})
+		});
 		return;
 	} else {
 		email.verified = Date.now();
@@ -101,4 +105,4 @@ exports.verifyEmail = function verifyEmail(req, res) {
 			email: email.email
 		});
 	}
-}
+};

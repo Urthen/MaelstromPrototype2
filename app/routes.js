@@ -36,8 +36,8 @@ module.exports = function(app){
 	app.post('/profile/edit', helpers.requireLogin, profileController.editProfile);	
 
 	// Email verification process
-	app.get('/email/verify/:id', helpers.requireLogin, emailVerificationController.verifyEmail);
-	app.get('/email/verify/send/:id', helpers.requireLogin, emailVerificationController.sendVerification);
+	app.get('/email/verify/:id', helpers.requireLogin, emailVerificationController.verifyEmailRoute);
+	app.get('/email/verify/send/:id', helpers.requireLogin, emailVerificationController.sendVerificationRoute);
 
 	// Preview Emails (not in production, obviously)
 	if (process.env.NODE_ENV !== 'production') {

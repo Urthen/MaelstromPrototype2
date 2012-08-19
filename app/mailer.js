@@ -15,9 +15,9 @@ emailTemplates(templatesDir, function(err, template) {
 	}
 });
 
-function sendOne(message) {
-	def = deferred();
-	var body = querystring.stringify(message),
+function sendOne(message) {	
+	var def = deferred(),
+		body = querystring.stringify(message),
 		opts = {
 			host: 'api.mailgun.net',
 			port: 443,
@@ -31,9 +31,18 @@ function sendOne(message) {
 			}
 		},
 		req = https.request(opts, function(res) {
-			def.resolve(res.statusCode > 201 ? new Error(res.statusCode) : undefined);
+			if(res.statusCode > 201) {
+				console.log("Error sending email:", res.statusCode);
+				res.on('data', function(chunk) {
+					console.log("ERR " + chunk);
+				});
+				def.resolve(false);
+			} else {
+				def.resolve(true);
+			}
 		});
 	req.end(body);
+	console.log("sent email", message);
 	return def.promise;
 }
 

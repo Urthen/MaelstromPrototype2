@@ -14,24 +14,38 @@ block content
 
 	form#ProfileForm(method="POST", action="/profile/edit")
 		input(type="hidden", name="_csrf", value=token)
+		h4 Personal Information
 		.inforow
 			label(for="preferredName") Preferred Name: 
 			input(name="preferredName", value=user.name)
 
-		.inforow
+		.inforow		
+			h4 Emails:
 			if user.emails.length > 0
-				h5.infolabel Emails:
-					ul
-						each email in user.emails
-							li
-								.info #{email.email}
-									if email.verified
-										span.infonote  Verified
-									else
-										span.infonote  Unverified
+				table.emailTable
+					each email in user.emails
+						tr
+							td #{email.email}
+							if email.verified
+								td  
+									span.indicator.affirmative Verified
+							else
+								td
+									span.indicator.negative Unverified
+							td
+								span.RemoveEmail.button.minor Remove
+								span.indicator.negative.hidden.RemoveNote Will be removed if saved
+								input(type="hidden", name="keepEmail", value=email.id)
 
 			else
 				span.infomissing No emails attached - you should add one in case you need to recover your account!
+
+		.inforow
+			h5 Add New Emails: 
+			.emailRow
+				input(name="addEmail")
+				|  
+				span.button.affirmative.AddEmail Add more...
 
 		.actionbuttons
 			a.button.affirmative#SaveButton(href="#") Save
