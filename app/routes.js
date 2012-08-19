@@ -34,6 +34,7 @@ module.exports = function(app){
 	app.get('/profile', helpers.requireLogin, profileController.showProfile);
 	app.get('/profile/edit', helpers.requireLogin, profileController.editProfile);
 	app.post('/profile/edit', helpers.requireLogin, profileController.editProfile);	
+	app.get('/profile/linked', helpers.requireLogin, profileController.linkedProfiles);
 
 	// Email verification process
 	app.get('/email/verify/:id', helpers.requireLogin, emailVerificationController.verifyEmailRoute);

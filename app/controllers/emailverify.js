@@ -3,18 +3,19 @@ var mailer = require('../mailer'),
 
 function genEmailVerifyKey(email, user) {
 	var shasum = crypto.createHash('sha1');
-	shasum.update("" + email.id);
+	shasum.update("" + email.email);
 	shasum.update("" + user.id);
 	return shasum.digest('hex');
 }
 
 function sendVerification (email, user) {
+	console.log("sendVerification", email);
 	return mailer.sendTemplate("email_verify", {
 			from: "Project Maelstrom <welcome@projectmaelstrom.com>",
 			to: email.email,
 			subject: "Verify your email",
 		}, {
-			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user)
+			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user) + "&continue=/profile"
 		});
 }
 
@@ -26,36 +27,22 @@ exports.sendVerificationRoute = function sendVerificationRoute(req, res) {
 
 	if (!eid) {
 		console.log("email id missing from verification");
-		res.render('email_verify', {
-			error: true,
-			completed: false
-		});
+		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	}
 
 	email = req.user.emails.id(eid);
 	if (!email) {
 		console.log("email id doesn't match any of users' emails");
-		res.render('email_verify', {
-			error: true,
-			completed: false
-		});
+		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	} else if (email.verified) {
-		res.render('email_verify', {
-			error: true,
-			completed: true,
-			email: email.email
-		});
+		res.render('email_verify', {messages: {alreadyVerified: true, email: email.email, continue: '/profile'}});
 	}
-
+	console.log("about to send", email)
 	sendVerification(email, req.user)(function() {
-			res.render('email_verify', {
-				error: false,
-				completed: false,
-				email: email.email
-			});
-		}).done();
+			res.render('email_verify', {messages: {sent: true, email: email.email, continue: '/profile'}});
+		}).end();
 };
 
 exports.sendWelcome = function sendWelcome(email, user) {
@@ -64,7 +51,7 @@ exports.sendWelcome = function sendWelcome(email, user) {
 			to: email.email,
 			subject: "Welcome to Maelstrom",
 		}, {
-			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user)
+			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user) + "%continue=/"
 		});
 };
 
@@ -74,35 +61,22 @@ exports.verifyEmailRoute = function verifyEmailRoute(req, res) {
 
 	if (!eid) {
 		console.log("email id missing from verification");
-		res.render('email_verify', {
-			error: true,
-			completed: false
-		});
+		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	}
 
 	email = req.user.emails.id(eid);
 	if (!email) {
 		console.log("email id doesn't match any of users' emails");
-		res.render('email_verify', {
-			error: true,
-			completed: false
-		});
+		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	} else if (req.query.key !== genEmailVerifyKey(email, req.user)) {
 		console.log("email key isn't correct for given email");
-		res.render('email_verify', {
-			error: true,
-			completed: false
-		});
+		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	} else {
 		email.verified = Date.now();
 		req.user.save();
-		res.render('email_verify', {
-			error: false,
-			completed: true,
-			email: email.email
-		});
+		res.render('email_verify', {messages: {success: true, email: email.email, continue: req.query.continue || '/profile'}});
 	}
 };

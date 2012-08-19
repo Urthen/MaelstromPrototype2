@@ -4,15 +4,19 @@ block content
 
 	h2 Email verification
 
-	if error
-		if completed
-			p The email address #{email} has already been verified. There is no need for further verification.
-		else
-			p There seems to be a problem determining what email address should be verified. If you copied this URL from your verification email,
-				| please double-check that you copied the entire URL.
-	else
-		if completed
-			p Success! We've verified #{email} as your account.
-		else
-			p Email verification has been sent to #{email} and should arrive momentarily. If you don't recieve the email, check your spam folder or
-				| ask to send the verification again.
+	if messages.alreadyVerified
+		p The email address #{messages.email} has already been verified. There is no need for further verification.
+	if messages.idError
+		p There seems to be a problem determining what email address should be verified. If you copied this URL from your verification email,
+			| please double-check that you copied the entire URL.
+	if messages.sent
+		p Email verification has been sent to #{messages.email} and should arrive momentarily. If you don't recieve the email, check your spam folder or
+			| ask to send the verification again.
+	if messages.success	
+		p Success! We've verified #{messages.email} as your account.
+	if messages.continue
+		.actionbuttons
+			a.button.affirmative.major(href=messages.continue) Continue...
+	if messages.back
+		.actionbuttons
+			a.button.negative.major(href=messages.back) Back...

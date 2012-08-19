@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
 		uid: {type: String, index: true},
 		type: {type: String, index: true},
 		created: {type: Date, default: Date.now},
-		name: String
+		name: String,
+		account: String
 	});
 
 mongoose.model('ForeignCredential', ForeignCredential);
@@ -88,6 +89,7 @@ User.methods.addCredential = function addCredential (profile) {
 	credential.uid = profile.id;
 	credential.type = profile.provider;
 	credential.name = profile.displayName;
+	credential.account = profile.screen_name || profile.username || null;
 	this["credentials"].push(credential);
 	return true;
 };
@@ -107,11 +109,14 @@ User.methods.listCredentials = function listCredentials () {
 	
 	for (var i in this["credentials"]) {
 		credential = this["credentials"][i];
+		if(!credential.type) { continue; }
 		if (output[credential.type] === undefined) { output[credential.type] = []; }
 		output[credential.type].push(credential);
 	}
 
-	return credential;
+	console.log(output);
+
+	return output;
 };
 
 // Find a user by given credential

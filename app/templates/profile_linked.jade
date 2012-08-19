@@ -1,0 +1,28 @@
+extends base
+
+block prepend nav
+	- var location = "Profile";
+	- var sublocation = "Accounts";
+
+block content
+
+	h1 Linked Accounts
+
+	p We know you're #{user.name}... but who else are you around the web?
+	p Connect as many accounts from different services as you want. Log in as any of them.
+
+	h2 Currently Linked
+	each credentials, type in user.listCredentials()
+		case type
+			when 'facebook': h3 Facebook accounts:
+			when 'twitter': h3 Twitter accounts:
+		ul
+		each credential in credentials
+			li= credential.name
+				if credential.account
+					span.hint  (#{credential.account})
+
+	h2 Link More
+	.actionbuttons
+		a(href="/auth/facebook/?redirect=/profile/linked").login.button Connect with Facebook!
+		a(href="/auth/twitter/?redirect=/profile/linked").login.button Connect with Twitter!
