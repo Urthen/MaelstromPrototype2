@@ -23,6 +23,8 @@ function addEmail(user, email) {
 				if (err) {console.log(err);}
 				def.resolve();
 			}).end();
+		} else {
+			def.resolve();
 		}
 	});
 	return def.promise;

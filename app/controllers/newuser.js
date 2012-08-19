@@ -14,7 +14,7 @@ exports.newUser = function newUser (req, res) {
 		return;
 	}
 
-	res.render("newuser", {emailTaken: false});
+	res.render("newuser");
 };
 
 exports.newUserConfirm = function newUserConfirm (req, res, next) {
@@ -40,11 +40,11 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 							});
 						}).end();
 				} else {
-					res.render("newuser", {emailTaken: true});
+					res.render("newuser", {messages: {emailTaken: true, emailPrefill: email}});
 				}
 			}).end();
 		} catch(e) {
-			res.render("newuser", {emailTaken: true});
+			res.render("newuser", {messages: {emailInvalid: true, emailPrefill: email}});
 		}
 	} else {
 		req.user.temporary = false;

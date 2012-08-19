@@ -16,14 +16,17 @@ block content
 	h3 Hello there, #{user.name}!
 
 	.leftBlurb
-		if emailTaken
+		if messages.emailTaken
 			p
 				b Whoops... that email is already taken by another account.
 				|  Do you perhaps already have a Maelstrom account? If so, click "No, delete my information" and log into your existing
 				| account with another method, then link the account.
 			p Part of the concept of Maelstrom is that you only ever need one account for your entire online life. There's no need to ever create
 				| multiple Maelstrom accounts!
-		else
+		if messages.emailInvalid
+			p
+				p Whoops... that email looks invalid.
+		unless messages.emailInvalid || messages.emailTaken
 			p
 				b It looks like this is your first time logging in.
 				|  We've automatically created a Maelstrom account for you. If you've never heard of Maelstrom, and want some more information
@@ -37,7 +40,7 @@ block content
 				label(for="email") Email 
 					span.hint (suggested)
 					| : 
-				input(name="email")
+				input(name="email", value=messages.emailPrefill)
 
 			a#CreateButton(href="#").button.affirmative.major Yes, create my account!
 			a(href="/newuser/decline/").button.negative.minor No, delete my information
