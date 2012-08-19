@@ -44,4 +44,7 @@ module.exports = function(app){
 		app.post('/mailtest/preview', mailHelpController.previewEmail);
 		app.post('/mailtest/send', mailHelpController.sendEmail);
 	}
+
+	// omg secret
+	app.get('/charybdis', function(req, res) { res.end('here be monsters'); });
 };

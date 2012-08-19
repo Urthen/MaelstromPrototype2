@@ -1,5 +1,6 @@
 var emailverify = require('./emailverify'),
-	deferred = require('deferred');
+	deferred = require('deferred'),
+	validator = require('validator');
 
 exports.showProfile = function(req, res) {
 	res.render('profile');
@@ -49,12 +50,23 @@ exports.editProfile = function(req, res) {
 			}
 		}
 
+		var email;
 		if (req.body.addEmail) {
 			if(req.body.addEmail.substring) {
-				promises.push(addEmail(req.user, req.body.addEmail));
+				email = req.body.addEmail;
+				try {
+					if (validator.check(email).len(3, 100).isEmail()) {				
+						promises.push(addEmail(req.user, email));	
+					}
+				} catch(e) {}
 			} else {
 				for(i in req.body.addEmail) {
-					promises.push(addEmail(req.user, req.body.addEmail[i]));
+					email = req.body.addEmail;
+					try {
+						if (validator.check(email).len(3, 100).isEmail()) {				
+							promises.push(addEmail(req.user, email));	
+						}
+					} catch(e) {}
 				}
 			}
 		}

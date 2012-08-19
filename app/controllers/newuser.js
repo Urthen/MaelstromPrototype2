@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
 	emailverify = require('./emailverify'),
 	mailer = require('../mailer'),
+	validator = require('validator'),
 	User = mongoose.model('User');
 
 exports.newUser = function newUser (req, res) {
@@ -26,19 +27,25 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 	}
 
 	var email = req.body.email;
+
 	if (email) {
-		req.user.addEmail(email)(function (emailObj) {
-			if (emailObj) {
-				emailverify.sendWelcome(emailObj, req.user)(function(){
-						req.user.temporary = false;
-						req.user.save(function(err) {
-							next(err);
-						});
-					}).end();
-			} else {
-				res.render("newuser", {emailTaken: true});
-			}
-		}).end();
+		try {
+			validator.check(email).len(3, 100).isEmail();
+			req.user.addEmail(email)(function (emailObj) {
+				if (emailObj) {
+					emailverify.sendWelcome(emailObj, req.user)(function(){
+							req.user.temporary = false;
+							req.user.save(function(err) {
+								next(err);
+							});
+						}).end();
+				} else {
+					res.render("newuser", {emailTaken: true});
+				}
+			}).end();
+		} catch(e) {
+			res.render("newuser", {emailTaken: true});
+		}
 	} else {
 		req.user.temporary = false;
 		req.user.save(function(err) {

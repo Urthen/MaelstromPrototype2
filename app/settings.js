@@ -45,6 +45,8 @@ module.exports = function (app) {
 		// This must appear after app.use(passport.session());
 		app.use(function (req, res, next) {
 			app.locals.token = req.session._csrf;
+			if (!req.session.messages) { req.session.messages = {}; }
+			app.locals.messages = req.session.messages;
 			app.locals.user = req.user;
 			app.locals.production = isProduction;
 			next();

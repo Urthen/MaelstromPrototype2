@@ -17,7 +17,9 @@
       "passport-twitter": "0.1.4",
       "redis": ">= 0.7.2",
       "connect-redis": "1.4.1",
-      "email-templates": "0.0.2"
+      "email-templates": "0.0.2",
+      "validator": "0.4.11",
+      "express-validator": ">= 0.0.1"
   }
   , "devDependencies" : {  
       "grunt-less": ">= 0.0.1"
