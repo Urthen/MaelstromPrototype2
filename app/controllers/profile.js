@@ -86,4 +86,4 @@ exports.editProfile = function(req, res) {
 
 exports.linkedProfiles = function(req, res) {
 	res.render('profile_linked');
-}
+};

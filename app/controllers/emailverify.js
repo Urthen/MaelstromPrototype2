@@ -39,7 +39,7 @@ exports.sendVerificationRoute = function sendVerificationRoute(req, res) {
 	} else if (email.verified) {
 		res.render('email_verify', {messages: {alreadyVerified: true, email: email.email, continue: '/profile'}});
 	}
-	console.log("about to send", email)
+	
 	sendVerification(email, req.user)(function() {
 			res.render('email_verify', {messages: {sent: true, email: email.email, continue: '/profile'}});
 		}).end();
