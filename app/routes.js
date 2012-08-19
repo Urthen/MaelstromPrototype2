@@ -32,6 +32,8 @@ module.exports = function(app){
 
 	// User Profile Management
 	app.get('/profile', helpers.requireLogin, profileController.showProfile);
+	app.get('/profile/edit', helpers.requireLogin, profileController.editProfile);
+	app.post('/profile/edit', helpers.requireLogin, profileController.editProfile);	
 
 	// Email verification process
 	app.get('/email/verify/:id', helpers.requireLogin, emailVerificationController.verifyEmail);

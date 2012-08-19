@@ -1,0 +1,38 @@
+extends base
+
+block append scripts
+	script(type="text/javascript", src="/js/editprofile.js")
+
+block prepend nav
+	- var location = "Profile";
+	- var sublocation = "Edit";
+
+block content
+
+	h2 Edit Profile
+
+
+	form#ProfileForm(method="POST", action="/profile/edit")
+		input(type="hidden", name="_csrf", value=token)
+		.inforow
+			label(for="preferredName") Preferred Name: 
+			input(name="preferredName", value=user.name)
+
+		.inforow
+			if user.emails.length > 0
+				h5.infolabel Emails:
+					ul
+						each email in user.emails
+							li
+								.info #{email.email}
+									if email.verified
+										span.infonote  Verified
+									else
+										span.infonote  Unverified
+
+			else
+				span.infomissing No emails attached - you should add one in case you need to recover your account!
+
+		.actionbuttons
+			a.button.affirmative#SaveButton(href="#") Save
+			a.button.negative(href="/profile") Cancel
