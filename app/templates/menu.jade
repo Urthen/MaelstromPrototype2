@@ -18,6 +18,9 @@ if menu["Profile"]
 mixin menuitem("Manage", "Manage Applications", "/apps")				
 if menu["Manage"]
 	.subnav				
-mixin menuitem("Dev", "Develop Applications", "/dev")
-if menu["Dev"]
+mixin menuitem("Develop", "Develop Applications", "/dev")
+if menu["Develop"]
 	.subnav
+		mixin submenuitem("Apps", "My Applications", "/dev")
+		mixin submenuitem("Create", "Create Application", "/dev/apps/create")
+		mixin submenuitem("Documentation", "Developer Documentation", "/dev/docs")

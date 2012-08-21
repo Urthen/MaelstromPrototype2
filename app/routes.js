@@ -4,6 +4,7 @@ var indexController = require('./controllers/index'),
 	mailHelpController = require('./controllers/mailhelper'),
 	profileController = require('./controllers/profile'),
 	emailVerificationController = require('./controllers/emailverify'),
+	developerController = require('./controllers/develop'),
 	passport = require('passport'),
 	helpers = require('./controllers/helpers');
 
@@ -39,6 +40,11 @@ module.exports = function(app){
 	// Email verification process
 	app.get('/email/verify/:id', helpers.requireLogin, emailVerificationController.verifyEmailRoute);
 	app.get('/email/verify/send/:id', helpers.requireLogin, emailVerificationController.sendVerificationRoute);
+
+	// Develop applications
+	app.get('/dev', helpers.requireLogin, developerController.landingPage);
+	app.get('/dev/app/create', helpers.requireLogin, developerController.createAppPage);
+	app.post('/dev/app/create', helpers.requireLogin, developerController.createAppPage);
 
 	// Preview Emails (not in production, obviously)
 	if (process.env.NODE_ENV !== 'production') {

@@ -1,0 +1,40 @@
+extends base
+
+block prepend nav
+	- var location = "Develop";
+	- var sublocation = "Create";
+
+block content
+
+	h1 Create Application
+
+	p The Maelstrom Network is currently in a testing state. You can create applications for testing and demonstration purposes, but we do not
+		| recommend you use them in production on any serious web site just yet. See the 
+		a(href="/dev/docs") Developer Documentation
+		|  for more information.
+
+	if messages.errors
+		p
+			each error in messages.errors
+				.indicator.negative= error
+
+	form.rightrows(method="POST", action="/dev/app/create")
+		input(type='hidden', name="_csrf", value=token)
+
+		.formrow
+			label(for='name') Application Name:
+			input(name='name', size='50', value=prepop.name)
+			.hint Name for your application, displayed to the user when they are asked to authorize the application
+		.formrow
+			label(for='domain') Domain:
+			input(name='domain', size='50', value=prepop.domain)
+			.hint All redirect URLs must be on this domain for security purposes. Must be 
+				em sub.domain.tld
+				|  format.
+		.formrow
+			label(for='redirect') Redirect URL:
+			input(name='redirect', size='50', value=prepop.redirect)
+			.hint Default redirect url. Must be on the above domain.
+
+		input.button.affirmative.major(type='submit', value="Create!")
+		a.button.negative.minor(href='/dev') Cancel

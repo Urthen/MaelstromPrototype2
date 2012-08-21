@@ -1,0 +1,17 @@
+extends base
+
+block prepend nav
+	- var location = "Develop";
+	- var sublocation = "Apps";
+
+block content
+
+	h1 Maelstrom Applications
+
+	p The Maelstrom Network is currently in a testing state. You can create applications for testing and demonstration purposes, but we do not
+		| recommend you use them in production on any serious web site just yet. See the 
+		a(href="/dev/docs") Developer Documentation
+		|  for more information.
+
+	.apptable
+		a.button(href="/dev/app/create") Create your first application
