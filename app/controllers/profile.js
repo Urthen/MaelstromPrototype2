@@ -74,9 +74,12 @@ exports.editProfile = function(req, res) {
 		}
 
 		deferred.apply(deferred, promises)(function() {	
-			req.user.save(function(err) {
-				res.redirect('/profile/edit');
-			});
+			return req.user.pSave();
+		})(function() {
+			res.redirect('/profile/edit');
+		}, function(err) {
+			console.log("error saving user:", err);
+			res.redirect('/profile/edit');
 		});
 
 	} else {

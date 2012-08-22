@@ -1,9 +1,10 @@
 var crypto = require('crypto'),
+	deferred = require('deferred'),
 	mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	ObjectId = Schema.ObjectId;
 
-var ApplicationRecord = new Schema({
+var Application = new Schema({
 	name: String,
 	creator: ObjectId,
 	url: String,
@@ -12,12 +13,20 @@ var ApplicationRecord = new Schema({
 	created: {type: Date, default: Date.now}
 });
 
-ApplicationRecord.methods.regenerateSecret = function regenerateSecret(cb) {
-	var that = this;
-	crypto.randomBytes(10, function(ex, buf) {
-		that.secret = buf.toString('hex');
-		cb();
-	});
+Application.methods.regenerateSecret = function regenerateSecret() {	
+	this.secret = crypto.randomBytes(10).toString('hex');
 };
 
-mongoose.model('ApplicationRecord', ApplicationRecord);
+Application.methods.pSave = function pSave () {
+	var def = deferred();
+	this.save(function(err){
+		def.resolve(err);
+	});
+	return def;
+};
+
+
+mongoose.model('Application', Application);
+var ApplicationProto = mongoose.model('Application');
+ApplicationProto.pFind = deferred.promisify(ApplicationProto.find);
+ApplicationProto.pFindById = deferred.promisify(ApplicationProto.findById);

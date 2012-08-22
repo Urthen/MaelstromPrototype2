@@ -1,0 +1,46 @@
+extends base
+
+block prepend nav
+	- var location = "Develop";
+
+block content
+
+	h1 Edit Application
+
+	if messages.errors
+		p
+			each error in messages.errors
+				.indicator.negative= error
+
+	form.rightrows(method="POST", action="/dev/app/regenkey/" + app.id)	
+		input(type='hidden', name="_csrf", value=token)
+		.formrow
+			label App ID:
+			input(disabled='disabled', value=app.id, size='50')
+
+		.formrow
+			label App Secret:
+			input(disabled='disabled', value=app.secret, size='25')
+			input.button(type='submit', value="Regenerate Secret")
+
+	form.rightrows(method="POST", action="/dev/app/edit/" + app.id)
+		input(type='hidden', name="_csrf", value=token)
+
+		.formrow
+			label(for='name') Application Name:
+			input(name='name', size='50', value=app.name)
+			.hint Name for your application, displayed to the user when they are asked to authorize the application
+
+		.formrow
+			label(for='domain') Domain:
+			input(name='domain', size='50', value=app.domain)
+			.hint All redirect URLs must be on this domain for security purposes. Must be 
+				em sub.domain.tld
+				|  format.
+		.formrow
+			label(for='redirect') Redirect URL:
+			input(name='redirect', size='50', value=app.redirect)
+			.hint Default redirect url. Must be on the above domain.
+
+		input.button.affirmative(type='submit', value="Save")
+		a.button.negative(href='/dev') Cancel

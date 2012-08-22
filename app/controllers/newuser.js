@@ -35,9 +35,11 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 				if (emailObj) {
 					emailverify.sendWelcome(emailObj, req.user)(function(){
 							req.user.temporary = false;
-							req.user.save(function(err) {
-								next(err);
-							});
+							return req.user.pSave();
+						})(function() {
+							next();
+						}, function(err) {
+							next(err);
 						}).end();
 				} else {
 					res.render("newuser", {messages: {emailTaken: true, emailPrefill: email}});
@@ -48,9 +50,12 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 		}
 	} else {
 		req.user.temporary = false;
-		req.user.save(function(err) {
+		console.log(req.user);
+		req.user.pSave()(function() {
+			next();
+		}, function(err) {
 			next(err);
-		});
+		}).end();
 	}
 };
 

@@ -45,6 +45,9 @@ module.exports = function(app){
 	app.get('/dev', helpers.requireLogin, developerController.landingPage);
 	app.get('/dev/app/create', helpers.requireLogin, developerController.createAppPage);
 	app.post('/dev/app/create', helpers.requireLogin, developerController.createAppPage);
+	app.get('/dev/app/edit/:id', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
+	app.post('/dev/app/edit/:id', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
+	app.post('/dev/app/regenkey/:id', helpers.requireLogin, helpers.getApp, developerController.regenKey);
 
 	// Preview Emails (not in production, obviously)
 	if (process.env.NODE_ENV !== 'production') {

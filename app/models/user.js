@@ -143,9 +143,16 @@ User.statics.findOrAddByCredential = function findByCredential (profile) {
 	return def.promise;
 };
 
+User.methods.pSave = function pSave () {
+	var def = deferred();
+	this.save(function(err){
+		def.resolve(err);
+	});
+	return def.promise;
+};
+
 // Add any additional promisified functionality here.
 mongoose.model('User', User);
 var userProto = mongoose.model('User');
-
 userProto.pFind = deferred.promisify(userProto.find);
 userProto.pFindOne = deferred.promisify(userProto.findOne);

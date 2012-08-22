@@ -78,6 +78,7 @@ exports.logout = function (req, res) {
 exports.disconnect = function (req, res) {
 	req.user.credentials.id(req.params.id).remove();
 	req.user.save(function(err) {
+		if (err) { console.log("Error saving user after disconnect:", err); }
 		res.redirect(req.query.return || '/profile/linked');
 	});
 };
