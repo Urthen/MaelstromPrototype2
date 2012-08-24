@@ -9,7 +9,7 @@ exports.landingPage = function(req, res) {
 	}, function (err) {
 		console.log("Error retrieving applications:", err);
 		res.render('dev_landing', {apps: []});
-	})
+	});
 };
 
 exports.createAppPage = function(req, res) {

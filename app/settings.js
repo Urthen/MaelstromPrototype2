@@ -21,7 +21,7 @@ module.exports = function (app) {
 		app.use(express.session({ 
 			secret: process.env.CLIENT_SECRET || "charybdis",
 			maxAge: new Date(Date.now() + (1000 * 60 * 60 * 24)), //One day max session time, or anytime redis restarts.
-			store: dbs.redis
+			store: dbs.redisStore
 		}));
 		
 		// Allow certain URLs to bypass CSRF protection

@@ -16,4 +16,5 @@ if (process.env.REDISTOGO_URL) {
 	redis = require("redis").createClient();
 }
 
-exports.redis = new RedisStore({client: redis});
+exports.redis = redis;
+exports.redisStore = new RedisStore({client: redis});
