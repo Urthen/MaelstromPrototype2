@@ -7,7 +7,7 @@ var crypto = require('crypto'),
 var Application = new Schema({
 	name: String,
 	creator: ObjectId,
-	url: String,
+	redirect: String,
 	domain: String,
 	secret: String,
 	created: {type: Date, default: Date.now}
@@ -22,7 +22,7 @@ Application.methods.pSave = function pSave () {
 	this.save(function(err){
 		def.resolve(err);
 	});
-	return def;
+	return def.promise;
 };
 
 
