@@ -5,6 +5,7 @@ var indexController = require('./controllers/index'),
 	profileController = require('./controllers/profile'),
 	emailVerificationController = require('./controllers/emailverify'),
 	developerController = require('./controllers/develop'),
+	oauthController = require('./controllers/auth/oauth'),
 	passport = require('passport'),
 	helpers = require('./controllers/helpers');
 
@@ -45,9 +46,13 @@ module.exports = function(app){
 	app.get('/dev', helpers.requireLogin, developerController.landingPage);
 	app.get('/dev/app/create', helpers.requireLogin, developerController.createAppPage);
 	app.post('/dev/app/create', helpers.requireLogin, developerController.createAppPage);
-	app.get('/dev/app/edit/:id', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
-	app.post('/dev/app/edit/:id', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
-	app.post('/dev/app/regenkey/:id', helpers.requireLogin, helpers.getApp, developerController.regenKey);
+	app.get('/dev/app/edit/:appid', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
+	app.post('/dev/app/edit/:appid', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
+	app.post('/dev/app/regenkey/:appid', helpers.requireLogin, helpers.getApp, developerController.regenKey);
+
+
+	//oAuth2 Authentication
+	app.get('/auth/oauth/authorize', helpers.getApp, oauthController.login);
 
 	// Preview Emails (not in production, obviously)
 	if (process.env.NODE_ENV !== 'production') {

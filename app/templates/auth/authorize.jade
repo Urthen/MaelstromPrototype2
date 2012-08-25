@@ -1,0 +1,36 @@
+extends ../base
+
+block styles
+	mixin style('login')
+
+block content
+	if user
+		.greeting
+			p Hi, #{user.name}!
+				a(href="/logout?redirect=" + redirect).button.logout.minor That's not me!
+			p The #{application.name} application is requesting you log into it.
+		.actionbuttons		
+			form(action="/module/login/confirm/", method="POST")#ConfirmForm
+				input(type="hidden", name="_csrf", value=token)
+				input(type="hidden", name="client_id", value=application.id)
+				input(type="hidden", name="redirect_uri", value=callback)
+				input.button.affirmative.major(type="submit", value="Yes, log me in.")	
+			a.button.negative.minor(href=callback) No, thank you.
+	else
+		.greeting
+			p Hello there! You don't seem to be logged in to the Maelstrom network.
+			p The #{application.name} application is requesting you log into it. Please connect to the Maelstrom network with one of your accounts below; you will then be prompted to log into #{application.name}.
+		.options
+			a(href="/auth/facebook/?redirect=" + redirect) Sign in with Facebook!
+			a(href="/auth/twitter/?redirect=" + redirect) Sign in with Twitter!
+			a(href=redirect) Actually, I don't want to log in.
+
+		.explain
+			h4 What is the Maelstrom Network?
+			p The Maelstrom Network is a new type of authentication network that puts your identity back into your hands. #{application.name} is a pilot application
+				| selected to help us test out functionality. By clicking one of the sign in buttons above, you will be signed into the Maelstrom Network and
+				| subsequently asked to confirm that you do also want to use your Maelstrom login to authorize the application. Part of our promise to you is we will
+				| never reveal any private information or data without your express permission. Right now, we only collect and provide your name.
+			p Please see 
+				a(href="http://www.projectmaelstrom.com") our home page
+				|  for more information, including descriptions of what the service will be in future iterations.

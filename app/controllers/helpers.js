@@ -13,21 +13,22 @@ exports.requireLogin = function (req, res, next) {
 };
 
 exports.getApp = function (req, res, next) {
-	if (!req.params.id) {
+	var appid = req.param('appid') || req.param('client_id');
+	if (!appid) {
 		console.log("Application ID required but not specified.");
 		res.redirect("/404");
 		return;
 	}
-	Application.pFindById(req.params.id)(function(app){
+	Application.pFindById(appid)(function(app){
 		if (app) {
 			req.application = app;
 			next();
 		} else {
-			console.log("Application ID " + req.params.id + " not found.");
+			console.log("Application ID " + appid + " not found.");
 			res.redirect("/404");
 		}
 	}, function(err) {
-		console.log("Error retrieving application ID:", req.params.id);
+		console.log("Error retrieving application ID:", appid);
 		res.redirect("/404");
 	}).end();
 };
