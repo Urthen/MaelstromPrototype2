@@ -114,62 +114,49 @@ User.methods.listCredentials = function listCredentials () {
 		output[credential.type].push(credential);
 	}
 
-	console.log(output);
-
 	return output;
 };
 
 // Find a user by given credential
 User.statics.findOrAddByCredential = function findByCredential (profile) {
-	var query = {},
-		def = deferred();
+	var query = {};
 
 	query["credentials.uid"] = profile.id;
 	query["credentials.type"] = profile.provider;
 
-	this.pFindOne(query)(function(user) {
+	return this.pFindOne(query)(function(user) {
 		if (user) {
 			user.accessed = Date.now();
-			user.save();
+			return user.pSave();
 		} else {
 			user = new (mongoose.model('User'))();
 			user.name = profile.displayName;
 			user.addCredential(profile);
-			user.save();
+			return user.pSave();
 		}
-		def.resolve(user);
-	}).end();
-
-	return def.promise;
+	});
 };
 
 // Attempt to add a app permission for a user; use existing permission if possible.
 User.methods.addAppAuth = function addAppAuth (app) {
 	var attrs = {
-		user: this.id,
-		application: app.id
-		}, 
-		def = deferred(),
+			user: this.id,
+			application: app.id
+		},
 		AppAuthorization = mongoose.model("AppAuthorization");
 
-	AppAuthorization.pFindOne(attrs)(function (permission) {
-		if (!permission) {
-			permission = new AppAuthorization(attrs);
-		}
-		permission.valid = true;		
-		return permission.pSave();
-	}, function(err) {
-		console.log("error while searching for existing user permission:", err);
-		var permission = new AppAuthorization(attrs);
-		permission.valid = true;		
-		return permission.pSave();
-	})(function(permission) {
-		def.resolve(permission);
-	}, function(err) {
-		def.resolve(err);
-	}).end();
-
-	return def.promise;
+	return AppAuthorization.pFindOne(attrs)(function (permission) {
+			if (!permission) {
+				permission = new AppAuthorization(attrs);
+			}
+			permission.valid = true;
+			return permission.pSave();
+		}, function(err) {
+			console.log("error while searching for existing user permission:", err);
+			var permission = new AppAuthorization(attrs);
+			permission.valid = true;		
+			return permission.pSave();
+		});
 };
 
 // deferred wrapper for save
