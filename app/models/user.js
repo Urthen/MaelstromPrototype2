@@ -141,7 +141,8 @@ User.statics.findOrAddByCredential = function findByCredential (profile) {
 User.methods.addAppAuth = function addAppAuth (app) {
 	var attrs = {
 			user: this.id,
-			application: app.id
+			application: app.id,
+			secret: app.secret
 		},
 		AppAuthorization = mongoose.model("AppAuthorization");
 
@@ -174,3 +175,4 @@ mongoose.model('User', User);
 var userProto = mongoose.model('User');
 userProto.pFind = deferred.promisify(userProto.find);
 userProto.pFindOne = deferred.promisify(userProto.findOne);
+userProto.pFindById = deferred.promisify(userProto.findById);

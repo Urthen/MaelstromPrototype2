@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var AppAuthorization = new Schema({
 	user: Schema.ObjectId,
 	application: Schema.ObjectId,
+	secret: String,
 	valid: {type: Boolean, default: false},
 	created: {type: Date, default: Date.now}
 });
@@ -39,3 +40,4 @@ mongoose.model('AppAuthorization', AppAuthorization);
 var appAuth = mongoose.model('AppAuthorization');
 appAuth.pFind = deferred.promisify(appAuth.find);
 appAuth.pFindOne = deferred.promisify(appAuth.findOne);
+appAuth.pFindById = deferred.promisify(appAuth.findById);

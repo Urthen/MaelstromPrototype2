@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-	Application = mongoose.model('Application');
+	Application = mongoose.model('Application'),
+	tokenService = require('../services/tokens');
 
 exports.requireLogin = function (req, res, next) {
 	if (!req.user) {
@@ -30,5 +31,24 @@ exports.getApp = function (req, res, next) {
 	}, function(err) {
 		console.log("Error retrieving application ID:", appid);
 		res.redirect("/404");
+	}).end();
+};
+
+exports.getAuthorization = function (req, res, next) {
+	var authToken = req.param('access_token');
+	if (!authToken) {
+		res.send(401, JSON.stringify({
+			error: "Access token invalid or not specified"
+		}));
+		return;
+	}
+
+	tokenService.getAuthFromToken(authToken)(function(auth){
+		req.authorization = auth;
+		next();
+	}, function(err) {
+		res.send(401, JSON.stringify({
+			error: String(err)
+		}));
 	}).end();
 };

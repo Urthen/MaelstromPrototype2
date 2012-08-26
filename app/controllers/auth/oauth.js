@@ -3,7 +3,8 @@ var url = require('url'),
 	mongoose = require('mongoose'),
 	AppAuthorization = mongoose.model("AppAuthorization"),
 	Application = mongoose.model("Application"),
-	User = mongoose.model("User");
+	User = mongoose.model("User"),
+	tokenService = require("../../services/tokens");
 
 exports.login = function oauthLogin (req, res) {
 	var callback = req.query.redirect_uri || req.application.redirect;
@@ -19,11 +20,23 @@ exports.login = function oauthLogin (req, res) {
 };
 
 exports.confirm = function oauthConfirm(req, res) {
-	req.user.addAppAuth(req.application)(function(permission){
+	req.user.addAppAuth(req.application)(function (permission){
+		return permission.getAuthCode();		
+	})(function (code) {		
 		var orig_url = url.parse(req.body.redirect_uri, true);
-
-		orig_url.query['code'] = permission.getAuthCode();
-
+		orig_url.query['code'] = code;
 		res.redirect(url.format(orig_url));
+	}).end();
+};
+
+exports.exchange = function oauthExchange(req, res) {
+	tokenService.exchangeAuthCode(req.body.code, req.body.client_secret)(function(token){
+		res.send(JSON.stringify({
+			access_token: token
+		}));
+	}, function(err){
+		res.send(400, JSON.stringify({
+			error: String(err)
+		}));
 	}).end();
 };

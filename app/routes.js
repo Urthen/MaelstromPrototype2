@@ -6,6 +6,7 @@ var indexController = require('./controllers/index'),
 	emailVerificationController = require('./controllers/emailverify'),
 	developerController = require('./controllers/develop'),
 	oauthController = require('./controllers/auth/oauth'),
+	infoController = require('./controllers/auth/info'),
 	passport = require('passport'),
 	helpers = require('./controllers/helpers');
 
@@ -54,6 +55,9 @@ module.exports = function(app){
 	//oAuth2 Authentication
 	app.get('/auth/oauth/authorize', helpers.getApp, oauthController.login);
 	app.post('/auth/oauth/confirm', helpers.requireLogin, helpers.getApp, oauthController.confirm);
+	app.post('/auth/oauth/exchange', oauthController.exchange);
+
+	app.get('/auth/info', helpers.getAuthorization, infoController.getInfo);
 
 	// Preview Emails (not in production, obviously)
 	if (process.env.NODE_ENV !== 'production') {
