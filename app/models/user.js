@@ -143,10 +143,41 @@ User.statics.findOrAddByCredential = function findByCredential (profile) {
 	return def.promise;
 };
 
-User.methods.pSave = function pSave () {
-	var def = deferred();
-	this.save(function(err){
+// Attempt to add a app permission for a user; use existing permission if possible.
+User.methods.addAppAuth = function addAppAuth (app) {
+	var attrs = {
+		user: this.id,
+		application: app.id
+		}, 
+		def = deferred(),
+		AppAuthorization = mongoose.model("AppAuthorization");
+
+	AppAuthorization.pFindOne(attrs)(function (permission) {
+		if (!permission) {
+			permission = new AppAuthorization(attrs);
+		}
+		permission.valid = true;		
+		return permission.pSave();
+	}, function(err) {
+		console.log("error while searching for existing user permission:", err);
+		var permission = new AppAuthorization(attrs);
+		permission.valid = true;		
+		return permission.pSave();
+	})(function(permission) {
+		def.resolve(permission);
+	}, function(err) {
 		def.resolve(err);
+	}).end();
+
+	return def.promise;
+};
+
+// deferred wrapper for save
+User.methods.pSave = function pSave () {
+	var def = deferred(),
+		that = this;
+	this.save(function(err){
+		def.resolve(err || that);
 	});
 	return def.promise;
 };

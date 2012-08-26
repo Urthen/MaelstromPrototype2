@@ -53,6 +53,7 @@ module.exports = function(app){
 
 	//oAuth2 Authentication
 	app.get('/auth/oauth/authorize', helpers.getApp, oauthController.login);
+	app.post('/auth/oauth/confirm', helpers.requireLogin, helpers.getApp, oauthController.confirm);
 
 	// Preview Emails (not in production, obviously)
 	if (process.env.NODE_ENV !== 'production') {

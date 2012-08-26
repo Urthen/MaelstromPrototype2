@@ -27,7 +27,7 @@ module.exports = function (app) {
 		// Allow certain URLs to bypass CSRF protection
 		// Obviously be carful what you allow here!!!
 		app.use(function(req, res, next) {
-			if (req.path === "/module/token/exchange" || 
+			if (req.path === "/auth/oauth/exchange" || 
 				req.path.indexOf("/mailtest/") === 0) {
 				next();
 			} else {

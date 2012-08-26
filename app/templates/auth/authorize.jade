@@ -10,7 +10,7 @@ block content
 				a(href="/logout?redirect=" + redirect).button.logout.minor That's not me!
 			p The #{application.name} application is requesting you log into it.
 		.actionbuttons		
-			form(action="/module/login/confirm/", method="POST")#ConfirmForm
+			form(action="/auth/oauth/confirm/", method="POST")#ConfirmForm
 				input(type="hidden", name="_csrf", value=token)
 				input(type="hidden", name="client_id", value=application.id)
 				input(type="hidden", name="redirect_uri", value=callback)
@@ -20,10 +20,10 @@ block content
 		.greeting
 			p Hello there! You don't seem to be logged in to the Maelstrom network.
 			p The #{application.name} application is requesting you log into it. Please connect to the Maelstrom network with one of your accounts below; you will then be prompted to log into #{application.name}.
-		.options
-			a(href="/auth/facebook/?redirect=" + redirect) Sign in with Facebook!
-			a(href="/auth/twitter/?redirect=" + redirect) Sign in with Twitter!
-			a(href=redirect) Actually, I don't want to log in.
+		.actionbuttons
+			a(href="/auth/facebook/?redirect=" + redirect).button Sign in with Facebook!
+			a(href="/auth/twitter/?redirect=" + redirect).button Sign in with Twitter!
+			a(href=redirect).button.minor Actually, I don't want to log in.
 
 		.explain
 			h4 What is the Maelstrom Network?

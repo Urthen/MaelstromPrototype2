@@ -1,12 +1,13 @@
 var url = require('url'),
 	validator = require('validator'),
-	crypto = require('crypto'),
 	mongoose = require('mongoose'),
-	//AppAuthorization = mongoose.model("AppAuthorization"),
+	AppAuthorization = mongoose.model("AppAuthorization"),
 	Application = mongoose.model("Application"),
 	User = mongoose.model("User");
 
 exports.login = function oauthLogin (req, res) {
+	var callback = req.query.redirect_uri || req.application.redirect;
+
 	var opts = {
 		user: req.user,
 		application: req.application,
@@ -15,4 +16,14 @@ exports.login = function oauthLogin (req, res) {
 	};
 
 	res.render('auth/authorize', opts);
+};
+
+exports.confirm = function oauthConfirm(req, res) {
+	req.user.addAppAuth(req.application)(function(permission){
+		var orig_url = url.parse(req.body.redirect_uri, true);
+
+		orig_url.query['code'] = permission.getAuthCode();
+
+		res.redirect(url.format(orig_url));
+	}).end();
 };
