@@ -1,0 +1,25 @@
+extends base
+
+block styles
+	link(rel="stylesheet", href="/css/index.css")
+	link(rel="stylesheet", href="/css/forms.css")
+
+block content
+	h3 Authorized applications
+
+	if applications.length
+		p You've given us permission to release your name and login status to the following applications. To revoke access to any
+			| individual application, just click the "Revoke" button next to the application name. The application will immediately lose 
+			| access to any data stored or accessed through the Maelstrom Network. You can always re-visit the application at any time to authorize
+			| the application again.
+		
+		table.applist
+			each application in applications
+				tr
+					td= application.name
+					td
+						a.button.minor(href="/apps/revoke/" + application.permission.id) Revoke
+	else
+		p You have no authorized applications! Why don't you try visiting our 
+			a(href="http://nodetest.projectmaelstrom.com") test application 
+			| to see how the authorization process works?

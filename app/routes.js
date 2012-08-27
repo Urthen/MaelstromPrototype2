@@ -4,6 +4,7 @@ var indexController = require('./controllers/index'),
 	mailHelpController = require('./controllers/mailhelper'),
 	profileController = require('./controllers/profile'),
 	emailVerificationController = require('./controllers/emailverify'),
+	appManagementController = require('./controllers/appmanage'),
 	developerController = require('./controllers/develop'),
 	oauthController = require('./controllers/auth/oauth'),
 	infoController = require('./controllers/auth/info'),
@@ -43,6 +44,10 @@ module.exports = function(app){
 	app.get('/email/verify/:id', helpers.requireLogin, emailVerificationController.verifyEmailRoute);
 	app.get('/email/verify/send/:id', helpers.requireLogin, emailVerificationController.sendVerificationRoute);
 
+	// Manage applications
+	app.get('/apps', helpers.requireLogin, appManagementController.listApps);
+	app.get('/apps/revoke/:authid', helpers.requireLogin, appManagementController.revokeApp);
+
 	// Develop applications
 	app.get('/dev', helpers.requireLogin, developerController.landingPage);
 	app.get('/dev/app/create', helpers.requireLogin, developerController.createAppPage);
@@ -50,7 +55,6 @@ module.exports = function(app){
 	app.get('/dev/app/edit/:appid', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
 	app.post('/dev/app/edit/:appid', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
 	app.post('/dev/app/regenkey/:appid', helpers.requireLogin, helpers.getApp, developerController.regenKey);
-
 
 	//oAuth2 Authentication
 	app.get('/auth/oauth/authorize', helpers.getApp, oauthController.login);
