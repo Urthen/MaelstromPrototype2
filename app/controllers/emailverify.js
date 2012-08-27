@@ -51,7 +51,7 @@ exports.sendWelcome = function sendWelcome(email, user) {
 			to: email.email,
 			subject: "Welcome to Maelstrom",
 		}, {
-			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user) + "%continue=/"
+			returnUrl: "http://prototype.projectmaelstrom.com/email/verify/" + email.id + "?key=" + genEmailVerifyKey(email, user) + "&continue=/"
 		});
 };
 
