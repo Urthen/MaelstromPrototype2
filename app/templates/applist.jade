@@ -1,8 +1,7 @@
 extends base
 
-block styles
-	link(rel="stylesheet", href="/css/index.css")
-	link(rel="stylesheet", href="/css/forms.css")
+block prepend nav
+	- var location = "Manage"
 
 block content
 	h3 Authorized applications

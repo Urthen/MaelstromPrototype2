@@ -14,7 +14,16 @@ exports.login = function oauthLogin (req, res) {
 			callback: validator.sanitize(req.query.redirect_uri).xss(),
 			redirect: encodeURIComponent('/auth/oauth/authorize?client_id=' + validator.sanitize(req.query.client_id).xss() + 
 				"&redirect_uri=" + encodeURIComponent(validator.sanitize(req.query.redirect_uri).xss())),
-		};
+		},
+		parsed = url.parse(req.query.redirect_uri);
+
+	console.log(parsed.hostname, req.application.domain)
+
+	if(parsed.hostname != req.application.domain) {
+		res.send(401, "The requested redirect URI is not valid for this application. This may have been an attempt to compromise your account. " +
+				"For your safety, we have stopped access. If you are developing an application, double-check your redirect URI against your application domain.");
+		return;
+	};
 
 	AppAuthorization.pFindOne({user: req.user.id, application: req.application.id})(function (auth) {
 		if(auth && auth.valid) {
