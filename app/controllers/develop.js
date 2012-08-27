@@ -64,7 +64,7 @@ exports.createAppPage = function(req, res) {
 	}, function(err) {
 		console.log("Error creating new app:", err);
 		errors.push("Unexpected error creating new application. If this continues to happen, please contact support.");
-		res.render('dev_createapp', {messages: {errors: errors}, prepop: {name: name, domain: domain, redirect: redirect}});
+		res.render('dev/createapp', {messages: {errors: errors}, prepop: {name: name, domain: domain, redirect: redirect}});
 	});
 };
 
@@ -115,7 +115,7 @@ exports.editAppPage = function (req, res) {
 		req.application.domain = domain;
 		req.application.redirect = redirect;
 		req.application.pSave()(function(){
-			res.render('dev_editapp', {app: req.application});
+			res.render('dev/editapp', {app: req.application});
 		}, function(err) {
 			console.log("Error editing app:", err);
 			errors.push("Unexpected error creating new application. If this continues to happen, please contact support.");

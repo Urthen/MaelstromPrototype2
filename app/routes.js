@@ -1,4 +1,5 @@
 var indexController = require('./controllers/index'),
+	legalController = require('./controllers/legal'),
 	newUserController = require('./controllers/newuser'),
 	credentialController = require('./controllers/credential'),
 	mailHelpController = require('./controllers/mailhelper'),
@@ -16,6 +17,11 @@ module.exports = function(app){
 	// Landing page routes
 	app.get('/', helpers.requireLogin, indexController.renderIndex);
 	app.get('/login', indexController.renderLogin);
+
+	// Legal
+	app.get('/terms', legalController.terms);
+	app.get('/privacy', legalController.privacy);
+	app.get('/pledge', legalController.pledge);
 
 	// Authorize credentials routes
 	app.get('/auth/facebook', credentialController.catchRedirectArgs, passport.authenticate('facebook'));

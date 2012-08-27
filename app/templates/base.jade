@@ -44,7 +44,11 @@ html(lang="en")
 				block header
 					if (user)
 						.loginstatus Logged in as 
-							span.username= user.name 
+							if (user.temporary)
+								span.username a temporary account 
+								a(href="/newuser").button.affirmative Confirm Account
+							else
+								span.username= user.name 
 							a(href="/logout").button.logout Logout
 					else
 						.loginstatus Not logged in. 
@@ -53,12 +57,19 @@ html(lang="en")
 					h1 
 						a(href="/") Maelstrom Network
 		.main
-			.nav
-				- var location, sublocation;
-				block nav
-					include menu
+			if (user && user.temporary != true)
+				.nav
+					- var location, sublocation;
+					block nav
+						include menu
 			.content
 				block content
 			.footer
 				block footer
-					| Project Maelstrom &copy; 2012
+					.copy Project Maelstrom &copy; 2012
+					.legal Legal: 
+						a(href="/terms") Terms
+						|  | 
+						a(href="/privacy") Privacy
+						|  | 
+						a(href="/pledge") Our Pledge

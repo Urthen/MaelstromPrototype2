@@ -25,20 +25,24 @@ exports.login = function oauthLogin (req, res) {
 		return;
 	};
 
-	AppAuthorization.pFindOne({user: req.user.id, application: req.application.id})(function (auth) {
-		if(auth && auth.valid) {
-			auth.getAuthCode()(function (code) {
-				var orig_url = url.parse(req.query.redirect_uri, true);
-				orig_url.query['code'] = code;
-				res.redirect(url.format(orig_url));	
-			}).end();
-		} else {
-			res.render('auth/authorize', opts);		
-		}
-	}, function (err) {
-		console.log("Error attempting to get existing app auth:", err);
+	if(req.user) {
+		AppAuthorization.pFindOne({user: req.user.id, application: req.application.id})(function (auth) {
+			if(auth && auth.valid) {
+				auth.getAuthCode()(function (code) {
+					var orig_url = url.parse(req.query.redirect_uri, true);
+					orig_url.query['code'] = code;
+					res.redirect(url.format(orig_url));	
+				}).end();
+			} else {
+				res.render('auth/authorize', opts);		
+			}
+		}, function (err) {
+			console.log("Error attempting to get existing app auth:", err);
+			res.render('auth/authorize', opts);
+		})
+	} else {
 		res.render('auth/authorize', opts);
-	})
+	}
 	
 };
 
