@@ -27,21 +27,21 @@ exports.sendVerificationRoute = function sendVerificationRoute(req, res) {
 
 	if (!eid) {
 		console.log("email id missing from verification");
-		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
+		res.render('profile/email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	}
 
 	email = req.user.emails.id(eid);
 	if (!email) {
 		console.log("email id doesn't match any of users' emails");
-		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
+		res.render('profile/email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	} else if (email.verified) {
-		res.render('email_verify', {messages: {alreadyVerified: true, email: email.email, continue: '/profile'}});
+		res.render('profile/email_verify', {messages: {alreadyVerified: true, email: email.email, continue: '/profile'}});
 	}
 	
 	sendVerification(email, req.user)(function() {
-			res.render('email_verify', {messages: {sent: true, email: email.email, continue: '/profile'}});
+			res.render('profile/email_verify', {messages: {sent: true, email: email.email, continue: '/profile'}});
 		}).end();
 };
 
@@ -61,22 +61,22 @@ exports.verifyEmailRoute = function verifyEmailRoute(req, res) {
 
 	if (!eid) {
 		console.log("email id missing from verification");
-		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
+		res.render('profile/email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	}
 
 	email = req.user.emails.id(eid);
 	if (!email) {
 		console.log("email id doesn't match any of users' emails");
-		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
+		res.render('profile/email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	} else if (req.query.key !== genEmailVerifyKey(email, req.user)) {
 		console.log("email key isn't correct for given email");
-		res.render('email_verify', {messages: {idError: true, back: '/profile'}});
+		res.render('profile/email_verify', {messages: {idError: true, back: '/profile'}});
 		return;
 	} else {
 		email.verified = Date.now();
 		req.user.save();
-		res.render('email_verify', {messages: {success: true, email: email.email, continue: req.query.continue || '/profile'}});
+		res.render('profile/email_verify', {messages: {success: true, email: email.email, continue: req.query.continue || '/profile'}});
 	}
 };

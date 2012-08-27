@@ -6,16 +6,16 @@ var validator = require('validator'),
 exports.landingPage = function(req, res) {
 	
 	Application.pFind({creator: req.user.id})(function(apps){
-		res.render('dev_landing', {apps: apps});		
+		res.render('dev/landing', {apps: apps});		
 	}, function (err) {
 		console.log("Error retrieving applications:", err);
-		res.render('dev_landing', {apps: []});
+		res.render('dev/landing', {apps: []});
 	});
 };
 
 exports.createAppPage = function(req, res) {
 	if(req.route.method === 'get') {
-		res.render('dev_createapp', {prepop: {}});
+		res.render('dev/createapp', {prepop: {}});
 		return;
 	}
 	var name = validator.sanitize(req.body.name).trim(),
@@ -48,7 +48,7 @@ exports.createAppPage = function(req, res) {
 
 
 	if(errors.length > 0) {
-		res.render('dev_createapp', {messages: {errors: errors}, prepop: {name: name, domain: domain, redirect: redirect}});
+		res.render('dev/createapp', {messages: {errors: errors}, prepop: {name: name, domain: domain, redirect: redirect}});
 		return;		
 	}
 
@@ -74,7 +74,7 @@ exports.editAppPage = function (req, res) {
 		res.redirect('/404');
 	}
 	if(req.route.method === 'get') {
-		res.render('dev_editapp', {app: req.application});
+		res.render('dev/editapp', {app: req.application});
 	} else {
 
 		var name = validator.sanitize(req.body.name).trim(),
@@ -107,7 +107,7 @@ exports.editAppPage = function (req, res) {
 		}
 
 		if(errors.length > 0) {
-			res.render('dev_editapp', {messages: {errors: errors}, app: req.application});
+			res.render('dev/editapp', {messages: {errors: errors}, app: req.application});
 			return;		
 		}
 
@@ -119,7 +119,7 @@ exports.editAppPage = function (req, res) {
 		}, function(err) {
 			console.log("Error editing app:", err);
 			errors.push("Unexpected error creating new application. If this continues to happen, please contact support.");
-			res.render('dev_createapp', {messages: {errors: errors}, app: req.application});
+			res.render('dev/createapp', {messages: {errors: errors}, app: req.application});
 		});
 	}
 };

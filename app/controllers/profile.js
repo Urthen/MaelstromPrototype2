@@ -3,7 +3,7 @@ var emailverify = require('./emailverify'),
 	validator = require('validator');
 
 exports.showProfile = function(req, res) {
-	res.render('profile');
+	res.render('profile/profile');
 };
 
 function removeEmail(user, email) {
@@ -83,10 +83,10 @@ exports.editProfile = function(req, res) {
 		});
 
 	} else {
-		res.render('profile_edit');
+		res.render('profile/edit');
 	}
 };
 
 exports.linkedProfiles = function(req, res) {
-	res.render('profile_linked');
+	res.render('profile/linked');
 };
