@@ -7,16 +7,30 @@ var url = require('url'),
 	tokenService = require("../../services/tokens");
 
 exports.login = function oauthLogin (req, res) {
-	var callback = req.query.redirect_uri || req.application.redirect;
+	var callback = req.query.redirect_uri || req.application.redirect,
+		opts = {
+			user: req.user,
+			application: req.application,
+			callback: validator.sanitize(req.query.redirect_uri).xss(),
+			redirect: encodeURIComponent('/auth/oauth/authorize?client_id=' + validator.sanitize(req.query.client_id).xss() + 
+				"&redirect_uri=" + encodeURIComponent(validator.sanitize(req.query.redirect_uri).xss())),
+		};
 
-	var opts = {
-		user: req.user,
-		application: req.application,
-		callback: validator.sanitize(req.query.redirect_uri).xss(),
-		redirect: encodeURIComponent('/auth/oauth/authorize?client_id=' + validator.sanitize(req.query.client_id).xss() + "&redirect_uri=" + encodeURIComponent(validator.sanitize(req.query.redirect_uri).xss())),
-	};
-
-	res.render('auth/authorize', opts);
+	AppAuthorization.pFindOne({user: req.user.id, application: req.application.id})(function (auth) {
+		if(auth && auth.valid) {
+			auth.getAuthCode()(function (code) {
+				var orig_url = url.parse(req.query.redirect_uri, true);
+				orig_url.query['code'] = code;
+				res.redirect(url.format(orig_url));	
+			}).end();
+		} else {
+			res.render('auth/authorize', opts);		
+		}
+	}, function (err) {
+		console.log("Error attempting to get existing app auth:", err);
+		res.render('auth/authorize', opts);
+	})
+	
 };
 
 exports.confirm = function oauthConfirm(req, res) {
