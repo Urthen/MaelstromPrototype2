@@ -23,6 +23,7 @@ module.exports = function(app){
 	app.get('/privacy', legalController.privacy);
 	app.get('/pledge', legalController.pledge);
 	app.get('/devterms', legalController.devterms);
+	app.get('/contact', legalController.contact);
 
 	// Authorize credentials routes
 	app.get('/auth/facebook', credentialController.catchRedirectArgs, passport.authenticate('facebook'));
@@ -62,6 +63,7 @@ module.exports = function(app){
 	app.get('/dev/app/edit/:appid', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
 	app.post('/dev/app/edit/:appid', helpers.requireLogin, helpers.getApp, developerController.editAppPage);
 	app.post('/dev/app/regenkey/:appid', helpers.requireLogin, helpers.getApp, developerController.regenKey);
+	app.get('/dev/docs', developerController.devDocs);
 
 	//oAuth2 Authentication
 	app.get('/auth/oauth/authorize', helpers.getApp, oauthController.login);

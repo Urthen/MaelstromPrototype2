@@ -14,3 +14,6 @@ module.exports.devterms = function (req, res) {
 	res.render('legal/devterms');
 };
 
+module.exports.contact = function (req, res) {
+	res.render('legal/contact');
+};

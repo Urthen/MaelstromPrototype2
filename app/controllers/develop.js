@@ -131,3 +131,7 @@ exports.regenKey = function(req, res) {
 		res.redirect('/dev/app/edit/' + req.application.id);
 	});
 };
+
+exports.devDocs = function(req, res) {
+	res.render('dev/devdocs');
+};

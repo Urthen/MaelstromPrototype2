@@ -1,0 +1,85 @@
+extends ../base
+
+block prepend nav
+	- var location = "Develop";
+	- var sublocation = "Documentation";
+
+block content
+
+	h2 Developer Documentation
+
+	p.indicator.affirmative This information will change and improve rapidly in response to developer needs. If you have any questions or suggestions, 
+		| please contact 
+		a(href="/contact", target="_blank") Developer Support
+		| .
+
+	ul.toc
+		li
+			a(href="#General") General Overview
+		li
+			a(href="#Node") Node passport-maelstrom SDK		
+		li
+			a(href="#OAuth") OAuth Implementation
+
+	h3
+		a(name="General", href="#General") General Overview
+
+	p Project Maelstrom uses a simple 
+		a(href="http://oauth.net/", target="_blank") oAuth
+		|  implementation scheme, similar to Facebook or Twitter. If you have imlemented login with either of those
+		| services, you should be familiar with the general terminology and actions involved and should be able to proceed immediately to either a
+		| specific language SDK or, if no SDK for your favorite language is available, the direct 
+		a(href="#OAuth") oAuth implementation instructions
+		| .
+
+	p The oAuth website defines oAuth as: 
+
+	blockquote An open protocol to allow secure authorization in a simple and standard method from web, mobile and desktop applications.
+
+	p The Maelstrom Network utilizes oAuth to allow third-party developers 
+		span.hint (thats you!)
+		|  to easily connect their applications to the Network for login service, identity validation, and more. Access to all of a users' resources
+		| may be requested through integration into the Maelstrom Network. We will handle storage and access permissions of the users' data, enabling
+		| applications to focus on what they are going to do with it rather than worry about security and privacy concerns. 
+
+	h4 What kind of resources are available through the Maelstrom Network?
+
+	p Currently, we make available information about an authorized user's preferred name and login status. In the future, however, we aim to be able to provide
+		| the resources such as the following. Note at this time we cannot provide a timeline for the addition of any of the following functionality. In no
+		| particular order, we'd love to offer the following in the future:
+	ul
+		li Verified email addresses
+		li Verified phone numbers
+		li Verified physical addresses
+		li Advanced user identification and authentication
+		li Subscription billing and management
+		li Retail (non-recurring) billing
+		li Advanced analytics of user demographics and trends
+		li Read/write access to cloud storage accounts in a standardized format
+		li Resources and permissions based on organizations rather than individuals
+
+	h3
+		a(name="Node", href="#Node") Node passport-maelstrom SDK
+
+	p We have made available a 
+		a(href="http://www.nodejs.org") Node.js
+		|  package for easy implementation of Maelstrom login into your next Node project. The package relies on 
+		a(href="http://passportjs.org/") passport.js
+		| , so if you have used Passport for your login before, you will be very familiar with everything neccesary to integrate with
+		| Maelstrom easily. If you are making a node application, this package is the suggested method for integrating with
+		| the Maelstrom Network as we will maintain it to keep it up to date.
+
+	p Check out installation and usage instructions for 
+		code passport-maelstrom
+		|   on 
+		a(href="https://github.com/Urthen/passport-maelstrom") Github
+		| .
+
+	p Additionally, our 
+		a(href="http://nodetest.projectmaelstrom.com") Test Application
+		|  is written in Node and uses the 
+		code passport-maelstrom
+		|  package, so head over there for a demonstration and further instructions.
+
+	h3
+		a(name="OAuth", href="#OAuth") OAuth Implementation
