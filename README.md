@@ -41,3 +41,5 @@ Using Sublime Text? Annoyed by lack of syntax highlighting in .jade files? Insta
     git clone https://github.com/miksago/jade-tmbundle.git Jade
 
 Having trouble debugging? Try [node-inspector](https://github.com/dannycoates/node-inspector)
+
+Want to know how many lines in the app there are? Run `./countlines.sh` from the main app directory.

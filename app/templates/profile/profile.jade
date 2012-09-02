@@ -28,4 +28,6 @@ block content
 					span.infonote  Unverified! 
 						a(href="/email/verify/send/" + email.id) Resend verification
 		else
-			span.infomissing No emails attached - you should add one in case you need to recover your account!
+			span.infomissing No emails attached - you should 
+				a(href="/profile/edit") add one
+				|  in case you need to recover your account!
