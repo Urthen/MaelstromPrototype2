@@ -50,7 +50,6 @@ exports.newUserConfirm = function newUserConfirm (req, res, next) {
 		}
 	} else {
 		req.user.temporary = false;
-		console.log(req.user);
 		req.user.pSave()(function() {
 			next();
 		}, function(err) {

@@ -3,15 +3,6 @@ extends base
 block styles
 	mixin style('login')
 
-block append scripts
-	script(type="text/javascript")
-		$(document).ready(function() {
-			$('#CreateButton').click(function() {
-				$("#EmailForm").submit();			
-				return false;
-			});
-		});
-
 block content
 	h3 Hello there, #{user.name}!
 
@@ -44,9 +35,16 @@ block content
 					span.hint (suggested)
 					| : 
 				input(name="email", value=messages.emailPrefill)
+				.hint We'd love to send you an email describing the Maelstrom Network in more detail, so you can read it later
+					| and get on with your business now.
 
-			a#CreateButton(href="#").button.affirmative.major Yes, create my account!
-			a(href="/newuser/decline/").button.negative.minor No, delete my information
+				input.button.affirmative.major(type="submit", value="Yes, create my account!")
+				a.button.negative.minor(href="/newuser/decline/") No, delete my information
+
+		.hint Creating your account implies you have read and agree to our 
+			a(href="/terms", target="_blank") Terms and Conditions
+			| . Please read carefully before creating an account. If you do not agree to the terms,
+			| please click "No, delete my information" above.
 
 	.rightBlurb
 		p If creating a new account is not what you meant to do, we can delete it and pretend it never happened.

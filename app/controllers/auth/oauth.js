@@ -7,6 +7,11 @@ var url = require('url'),
 	tokenService = require("../../services/tokens");
 
 exports.login = function oauthLogin (req, res) {
+	if (req.user && req.user.temporary) {
+		res.redirect('/newuser');
+		return;
+	}
+	
 	var callback = req.query.redirect_uri || req.application.redirect,
 		opts = {
 			user: req.user,
