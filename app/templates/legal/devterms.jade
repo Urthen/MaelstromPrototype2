@@ -42,6 +42,18 @@ block content
 		| or other functionality currently free. Applications currently utilizing any functionality that we start charging for which was previously free
 		| will be given a one month grace period to either sign up for the paid service or discontinue use of the deprecated free service.
 
+	h4 Who can I share my application with?
+
+	p You may only share your application, including the application's Secret Key, with users in your organization or directly related to the functionality of
+		| your application. You shall not share your application, access to authorize based on your application, or administration of your application with any
+		| third party unless they are directly related to operating or developing your application. For example, you may contract an agency to build an application
+		| for you, but you cannot share an application's ID and/or secret key with others in order to allow all parties to gain access to authorized resources.
+
+	p You must not share your secret key other than described above and are solely responsible for any claims or damages that may result from unauthorized release,
+		| distribution, or access to your secret key or application. Should you inadvertently allow unauthorized parties to know your secret key, you must
+		| generate a new secret key from the application edit page as soon as possible. You acknowledge that this will prompt us to invalidate all existing 
+		| access tokens which will need to be re-requested, but will not invalidate permissions your application has been given.
+
 	h4 What happens to my applications if I violate these terms?
 
 	p Violation of these terms may result in the cessation of functionality provided
@@ -62,10 +74,13 @@ block content
 		| direction. In particular, your application must follow these guidelines:
 
 	ul 
-		li You must not attempt to maintain access after access is revoked.
+		li You must not attempt to maintain access to resources after access is revoked.
+		li You must not attempt to gain access to resources not directly granted by the user.
 		li You must not transfer access, or information gained from access, to any other party, such as advertisers, marketers, or resellers, unless
 			| directly involved in the operation of your application. If information or access is to transferred, you must clearly mention any and all other parties
-			| that will also gain this access in a manner that is obvious to the user before they grant access. Any other party receiving access is also
+			| that will also gain this access in a manner that is obvious to the user 
+			strong before they grant access
+			| . Any other party receiving access is also
 			| bound by these same conditions and you are to be held solely responsible for their actions with respect to access provided to them.
 		li You must not sell access or information obtained through the Maelstrom Network for any reason. Should you as a company merge or be aquired you may
 			| continue to use obtained access and information for the continued purpose of the relevant application only.

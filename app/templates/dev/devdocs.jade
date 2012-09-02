@@ -16,6 +16,13 @@ block content
 	ul.toc
 		li
 			a(href="#General") General Overview
+			ul
+				li
+					a(href="#General-Creation") How do I create a Maelstrom application and what does this get me?
+				li
+					a(href="#General-Resources") What kind of resources are available through the Maelstrom Network?
+				li
+					a(href="#General-Login") How do users authorize access to my application?
 		li
 			a(href="#Node") Node passport-maelstrom SDK		
 		li
@@ -24,7 +31,42 @@ block content
 	h3
 		a(name="General", href="#General") General Overview
 
-	p Project Maelstrom uses a simple 
+	p Hi, and thanks for your interest in developing Maelstrom Applications. We hope to keep this process as simple as possible for developers to get up
+		| and running on our platform. With the planned future capability of the Maelstrom Network, your websites, applications, and devices will be given
+		| simple, secure access to a wide range of resources and capabilities authorized by users and brokered by the Network. We're still in the early stages,
+		| but we hope our Network will grow in response to your demands.
+
+	h4
+		a(name="General-Creation", href="#General-Creation") How do I create a Maelstrom application and what does this get me?
+
+	p You can create a basic application right now by visiting the 
+		a(href="/dev/create", target="_blank") Create Applications
+		|  developer pacge. You only need three pieces of information to start: A name, a domain, and a callback URL. The callback URL must be specified but
+		| doesn't need to be functional to create the application. Once you create the application, you will be given an application ID and secret key. You
+		| will be able to use this information as described later in this documentation to request users authorize you to authorize your application and 
+		| access resources.
+
+	h4
+		a(name="General-Resources", href="#General-Resources") What kind of resources are available through the Maelstrom Network?
+
+	p Currently, we make available information about an authorized user's preferred name and login status. In the future, however, we aim to be able to provide
+		| many more resources for developers to take advantage of. At this time we cannot provide a timeline for the addition of any of this functionality. 
+		| In no particular order, we'd love to offer the following as soon as we can develop it:
+	ul
+		li Verified email addresses
+		li Verified phone numbers
+		li Verified physical addresses
+		li Advanced user identification and authentication
+		li Subscription billing and management
+		li Retail (non-recurring) billing
+		li Advanced analytics of user demographics and trends
+		li Read/write access to cloud storage accounts in a standardized format
+		li Resources and permissions based on organizations rather than individuals
+
+	h4
+		a(name="General-Login", href="#General-Login") How do users authorize access to my application?
+
+	p The Maelstrom Network uses a simple 
 		a(href="http://oauth.net/", target="_blank") oAuth
 		|  implementation scheme, similar to Facebook or Twitter. If you have imlemented login with either of those
 		| services, you should be familiar with the general terminology and actions involved and should be able to proceed immediately to either a
@@ -42,22 +84,12 @@ block content
 		| may be requested through integration into the Maelstrom Network. We will handle storage and access permissions of the users' data, enabling
 		| applications to focus on what they are going to do with it rather than worry about security and privacy concerns. 
 
-	h4 What kind of resources are available through the Maelstrom Network?
-
-	p Currently, we make available information about an authorized user's preferred name and login status. In the future, however, we aim to be able to provide
-		| the resources such as the following. Note at this time we cannot provide a timeline for the addition of any of the following functionality. In no
-		| particular order, we'd love to offer the following in the future:
-	ul
-		li Verified email addresses
-		li Verified phone numbers
-		li Verified physical addresses
-		li Advanced user identification and authentication
-		li Subscription billing and management
-		li Retail (non-recurring) billing
-		li Advanced analytics of user demographics and trends
-		li Read/write access to cloud storage accounts in a standardized format
-		li Resources and permissions based on organizations rather than individuals
-
+	p oAuth uses a token exchange mechanism to authorize applications. In order to ensure both the user and application are who they say they are and
+		| neither can take advantage of the other, the user must first be redirect to an authorization screen hosted by the Maelstrom Network. This ensures
+		| only the logged in user can authorize an app, and the app cannot operate fraudulently. One the user authorizes, we reply to the app with an
+		| authorization code, which the app can use to exchange for an access token. This access token can be used to access any resources the user has
+		| authorized the app to access, such as their name or files.
+	
 	h3
 		a(name="Node", href="#Node") Node passport-maelstrom SDK
 
@@ -83,3 +115,54 @@ block content
 
 	h3
 		a(name="OAuth", href="#OAuth") OAuth Implementation
+
+	p To request a user authorize your application, you must first direct them to our authorization URL. This URL takes a specific form, which you will
+		| use and insert your own appropriate information:
+
+	pre http://prototype.projectmaelstrom.com/auth/oauth/authorize? ...
+		| &nbsp;&nbsp;&nbsp;&nbsp;response_type=code&redirect_uri=
+		em your_callback_uri
+		| &client_id=
+		em your_app_id
+
+	p We will ask the user if they wish to authorize your application by displaying the name of your application, as you provided it during creation,
+		| and the authorizations your application is requesting. At the time of this writing applications always request preferred name, but in the future
+		| applications will be able to specify what authorizations you request.
+
+	p Should the user acccept the authorization, we will redirect them back to your service at the specified URI, or the default redirect URI specified
+		| in your application if you do not specify it in the request. We will add the authorization code to the query parameters of the URI. It will be up
+		| to your application to finish the rest of the oAuth token granting mechanism.
+
+	p The authorization code itself has no access. Before you can access resources, you must post the authorization code and your secret key to our exchange URL:
+
+	pre http://prototype.projectmaelstrom.com/auth/oauth/exchange
+		br
+		| POST: code=
+		em user_auth_code
+		| &client_secret=
+		em your_app_secret
+
+	p Assuming the exchange was successful, it will reply with an access token in json format:
+
+	pre { access_token=
+		em user_access_token
+		|  }
+
+	p This access token can then be used to request protected resources. For example, to request all available personal information about the user, you would
+		| make a request like the following:
+	pre http://prototype.projectmaelstrom.com/auth/info?access_token=
+		em user_access_token
+
+	p This particular request will respond with a json object representing all information available to your application. This request will always include a 
+		code user
+		|  entry, which is the users' unique alphanumeric identifier for your application. It may include more information, such as name, as below:
+	pre { "user"="ae68aee2d40ecd8b6f86d8260f4e02ffa80f8e50", "name"="Fritbot" }
+
+	p Your application is responsible for handling cases where requested information may not be provided. The only information that is always provided upon a
+		| successful information request is the 
+		code user
+		|  information. You must always consider the latest request for any particular resource to be the most correct and up-to-date, even if it includes less
+		| information than a previous request. This generally means a user has revoked authorization for your application to a particular resource. In all cases,
+		| you are responsible for deleting any caches or copies of this information you may have had. As users may revoke access to any resource at any time,
+		| you should generally check each resource at least as frequently as a user uses your application.
+
