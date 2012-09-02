@@ -12,7 +12,7 @@ module.exports.listApps = function (req, res) {
 				throw err;
 			} else {
 				application.permission = permission;
-				def.resolve(application)
+				def.resolve(application);
 			}
 		});
 		return def.promise;
@@ -26,5 +26,5 @@ module.exports.listApps = function (req, res) {
 module.exports.revokeApp = function (req, res) {
 	AppAuthorization.findByIdAndUpdate(req.params.authid, {$set: {valid: false}}, function (err, permission) {
 		res.redirect('/apps');
-	})
-}
+	});
+};

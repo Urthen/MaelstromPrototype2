@@ -17,13 +17,11 @@ exports.login = function oauthLogin (req, res) {
 		},
 		parsed = url.parse(req.query.redirect_uri);
 
-	console.log(parsed.hostname, req.application.domain)
-
-	if(parsed.hostname != req.application.domain) {
+	if(parsed.hostname !== req.application.domain) {
 		res.send(401, "The requested redirect URI is not valid for this application. This may have been an attempt to compromise your account. " +
 				"For your safety, we have stopped access. If you are developing an application, double-check your redirect URI against your application domain.");
 		return;
-	};
+	}
 
 	if(req.user) {
 		AppAuthorization.pFindOne({user: req.user.id, application: req.application.id})(function (auth) {
@@ -39,7 +37,7 @@ exports.login = function oauthLogin (req, res) {
 		}, function (err) {
 			console.log("Error attempting to get existing app auth:", err);
 			res.render('auth/authorize', opts);
-		})
+		});
 	} else {
 		res.render('auth/authorize', opts);
 	}

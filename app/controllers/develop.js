@@ -39,8 +39,8 @@ exports.createAppPage = function(req, res) {
 		validator.check(redirect).isUrl().not(/^ftp/i);
 
 		var parsed = url.parse(redirect);
-		if (parsed.hostname != domain) {
-			errors.push("Redirect domain does not match application domain.")
+		if (parsed.hostname !== domain) {
+			errors.push("Redirect domain does not match application domain.");
 		}
 	} catch(e) {
 		errors.push('Redirect URL must be in valid http/https URL format.');
@@ -99,8 +99,8 @@ exports.editAppPage = function (req, res) {
 
 			var parsed = url.parse(redirect);
 			console.log(parsed, domain);
-			if (parsed.hostname != domain) {
-				errors.push("Redirect domain does not match application domain.")
+			if (parsed.hostname !== domain) {
+				errors.push("Redirect domain does not match application domain.");
 			}
 		} catch(e) {
 			errors.push('Redirect URL must be in valid http/https URL format.');
