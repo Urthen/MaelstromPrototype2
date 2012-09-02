@@ -9,3 +9,8 @@ module.exports.privacy = function (req, res) {
 module.exports.pledge = function (req, res) {
 	res.render('legal/pledge');
 }
+
+module.exports.devterms = function (req, res) {
+	res.render('legal/devterms');
+}
+

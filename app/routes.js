@@ -22,6 +22,7 @@ module.exports = function(app){
 	app.get('/terms', legalController.terms);
 	app.get('/privacy', legalController.privacy);
 	app.get('/pledge', legalController.pledge);
+	app.get('/devterms', legalController.devterms);
 
 	// Authorize credentials routes
 	app.get('/auth/facebook', credentialController.catchRedirectArgs, passport.authenticate('facebook'));
