@@ -24,6 +24,13 @@ AppAuthorization.methods.getAuthCode = function getAuthCode () {
 	return tokenService.getAuthCode(this);
 };
 
+AppAuthorization.methods.isAdminUser = function isAdminUser () {
+	var that = this;
+	return mongoose.model("Application").pFindById(this.application)(function (application) {
+		return '' + that.user === '' + application.creator;
+	});
+};
+
 // deferred wrapper for save
 AppAuthorization.methods.pSave = function pSave () {
 	var def = deferred(),
