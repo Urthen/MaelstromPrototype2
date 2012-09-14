@@ -1,9 +1,9 @@
 var mongoose = require('mongoose'),
 	deferred = require('deferred'),
-	Schema = mongoose.Schema,
+	Schema = mongoose.Schema;
 
 // Schema for foreign credentials, as in Facebook, Twitter, etc
-	ForeignCredential = new Schema({
+var ForeignCredential = new Schema({
 		uid: {type: String, index: true},
 		type: {type: String, index: true},
 		created: {type: Date, default: Date.now},
@@ -151,12 +151,12 @@ User.methods.addAppAuth = function addAppAuth (app) {
 				permission = new AppAuthorization(attrs);
 			}
 			permission.valid = true;
-			return permission.pSave();
+			return permission;
 		}, function(err) {
 			console.log("error while searching for existing user permission:", err);
 			var permission = new AppAuthorization(attrs);
 			permission.valid = true;		
-			return permission.pSave();
+			return permission;
 		});
 };
 

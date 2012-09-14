@@ -4,14 +4,38 @@ var mongoose = require('mongoose'),
 	deferred = require('deferred'),
 	tokenService = require('../services/tokens');
 
-var AppAuthorization = new Schema({
-	user: Schema.ObjectId,
-	application: Schema.ObjectId,
-	secret: String,
-	valid: {type: Boolean, default: false},
-	created: {type: Date, default: Date.now}
+var AppPermission = new Schema({
+	created: {type: Date, default: Date.now},
+	expires: Date,
+	type: String,
+	resourceId: String
 });
 
+AppPermission.methods.isValid = function isValid () {
+	return this.expires && this.expires > Date.now();
+};
+
+mongoose.model("AppPermission", AppPermission);
+
+var AppPermissionModel = mongoose.model("AppPermission"),
+	AppAuthorization = new Schema({
+		user: Schema.ObjectId,
+		application: Schema.ObjectId,
+		secret: String,
+		valid: {type: Boolean, default: false},
+		created: {type: Date, default: Date.now},
+		permissions: [AppPermission]
+	});
+
+AppAuthorization.methods.addPermission = function addPermission(type, resourceId, duration) {
+	var permission = new AppPermissionModel();
+	permission.type = type;
+	permission.resourceId = resourceId;
+	if (duration) {
+		permission.expires = new Date(Date.now().getTime() + duration * 60000);
+	}
+	this.permissions.push(permission);
+};
 
 AppAuthorization.methods.getExternalUID = function getExternalUID () {
 	var shasum = crypto.createHash('sha1');

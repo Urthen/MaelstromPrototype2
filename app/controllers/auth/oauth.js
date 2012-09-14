@@ -50,7 +50,10 @@ exports.login = function oauthLogin (req, res) {
 };
 
 exports.confirm = function oauthConfirm(req, res) {
-	req.user.addAppAuth(req.application)(function (permission){
+	req.user.addAppAuth(req.application)(function (permission) {
+		permission.addPermission("basicInfo", "preferredName");
+		return permission.pSave();		
+	})(function (permission){
 		return permission.getAuthCode();		
 	})(function (code) {		
 		var orig_url = url.parse(req.body.redirect_uri, true);
