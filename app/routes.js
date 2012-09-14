@@ -55,6 +55,7 @@ module.exports = function(app){
 	// Manage applications
 	app.get('/apps', helpers.requireLogin, appManagementController.listApps);
 	app.get('/apps/revoke/:authid', helpers.requireLogin, appManagementController.revokeApp);
+	app.get('/apps/revokePermission/:authid/:permissionid', helpers.requireLogin, appManagementController.revokeAppPermission);
 
 	// Develop applications
 	app.get('/dev', helpers.requireLogin, developerController.landingPage);

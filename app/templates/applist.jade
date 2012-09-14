@@ -19,14 +19,17 @@ block content
 			for application in applications
 				.application
 					.revoke.pull-right
-						a#ShowDetails.button.minor.positive(href="#") Details
-						a.button.minor.negative(href="/apps/revoke/" + application.permission.id) Revoke
+						a#ShowDetails.button.positive(href="#") Details
+						a.button.negative(href="/apps/revoke/" + application.permission.id) Revoke
 					h4.name= application.name
 					.permissions.hidden This application knows:
 						ul
-							li An identifier unique to this application
+							li An identifier unique to this application 
+								span.hint (This permission cannot be revoked.)
 							for permission in application.permission.permissions
-								li= permission.description
+								li #{permission.description}
+									a.button.minor.negative(href="/apps/revokePermission/" + application.permission.id + "/" + permission.id) Revoke
+
 	else
 		p You have no authorized applications! Why don't you try visiting our 
 			a(href="http://nodetest.projectmaelstrom.com") test application 
