@@ -1,5 +1,8 @@
 extends base
 
+block append scripts
+	script(type="text/javascript", src="/js/applist.js")
+
 block prepend nav
 	- var location = "Manage"
 
@@ -12,12 +15,18 @@ block content
 			| access to any data stored or accessed through the Maelstrom Network. You can always re-visit the application at any time to authorize
 			| the application again.
 		
-		table.applist
-			each application in applications
-				tr
-					td= application.name
-					td
-						a.button.minor(href="/apps/revoke/" + application.permission.id) Revoke
+		.applist
+			for application in applications
+				.application
+					.revoke.pull-right
+						a#ShowDetails.button.minor.positive(href="#") Details
+						a.button.minor.negative(href="/apps/revoke/" + application.permission.id) Revoke
+					h4.name= application.name
+					.permissions.hidden This application knows:
+						ul
+							li An identifier unique to this application
+							for permission in application.permission.permissions
+								li= permission.description
 	else
 		p You have no authorized applications! Why don't you try visiting our 
 			a(href="http://nodetest.projectmaelstrom.com") test application 

@@ -1,4 +1,4 @@
-var mongoose = require('mongoose'),
+	var mongoose = require('mongoose'),
 	util = require('util'),
 	deferred = require('deferred'),
 	AppAuthorization = mongoose.model("AppAuthorization"),
@@ -24,7 +24,20 @@ module.exports.listApps = function (req, res) {
 };
 
 module.exports.revokeApp = function (req, res) {
-	AppAuthorization.findByIdAndUpdate(req.params.authid, {$set: {valid: false}}, function (err, permission) {
-		res.redirect('/apps');
+	AppAuthorization.pFindById(req.params.authid)(function (permission) {
+		if (permission) {
+			permission.valid = false;
+			for (var i = 0; i <= permission.permissions.length; i++) {
+				permission.permissions[0].remove();
+			}
+			permission.pSave().end(function(err) {
+				if (err) {
+					console.log("error saving after revoking permission:", err);
+				}
+				res.redirect('/apps');
+			});
+		} else {
+			res.redirect('/apps');
+		}
 	});
 };

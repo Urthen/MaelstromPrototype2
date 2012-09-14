@@ -8,6 +8,7 @@ var AppPermission = new Schema({
 	created: {type: Date, default: Date.now},
 	expires: Date,
 	type: String,
+	description: String,
 	resourceId: String
 });
 
@@ -27,10 +28,11 @@ var AppPermissionModel = mongoose.model("AppPermission"),
 		permissions: [AppPermission]
 	});
 
-AppAuthorization.methods.addPermission = function addPermission(type, resourceId, duration) {
+AppAuthorization.methods.addPermission = function addPermission(type, resourceId, description, duration) {
 	var permission = new AppPermissionModel();
 	permission.type = type;
 	permission.resourceId = resourceId;
+	permission.description = description;
 	if (duration) {
 		permission.expires = new Date(Date.now().getTime() + duration * 60000);
 	}

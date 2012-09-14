@@ -51,7 +51,7 @@ exports.login = function oauthLogin (req, res) {
 
 exports.confirm = function oauthConfirm(req, res) {
 	req.user.addAppAuth(req.application)(function (permission) {
-		permission.addPermission("basicInfo", "preferredName");
+		permission.addPermission("basicInfo", "preferredName", "Your preferred name");
 		return permission.pSave();		
 	})(function (permission){
 		return permission.getAuthCode();		
