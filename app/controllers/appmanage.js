@@ -59,5 +59,5 @@ module.exports.revokeAppPermission = function (req, res) {
 		}
 	}).end(function () {
 		res.redirect('/apps');
-	})
-}
+	});
+};

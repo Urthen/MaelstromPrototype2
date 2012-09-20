@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
 	deferred = require('deferred'),
+	modelcache = new require('../../services/modelcache').ModelCache,
 	User = mongoose.model("User");
 
 exports.getInfo = function info(req, res) {
