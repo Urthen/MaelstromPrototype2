@@ -2,13 +2,24 @@ extends ../base
 
 block styles
 	mixin style('login')
-
 block content
 	if user
 		.greeting
 			p Hi, #{user.name}!
 				a.button.logout.minor(href="/logout?redirect=" + redirect) That's not me!
-			p The #{application.name} application is requesting you log into it.
+			if newAuthorization
+				p The #{application.name} application is requesting you log into it. This application requests the following information:
+				ul.permissions 
+					li An identifier unique to this application
+						.hint (This permission cannot be revoked)
+					for permission in requestedPermissions
+						li= permission
+			else
+				p The #{application.name} application is requesting additional permissions. The application requests the following 
+					| new permissions (in addition to those already granted):
+				ul.permissions
+					for permission in requestedPermissions
+						li= permission
 			.actionbuttons		
 				form#ConfirmForm(action="/auth/oauth/confirm/", method="POST")
 					input(type="hidden", name="_csrf", value=token)
@@ -28,10 +39,10 @@ block content
 				a.button.negative.minor(href=callback) Actually, I don't want to log in.
 
 		p Please connect to the Maelstrom network with one of your accounts above; you will 
-				| then be prompted to log into #{application.name}. In case you're wondering: We won't share any information we get from your accounts with 
-				| anyone unless you request it. Read our 
-				a(href="/privacy", target="_blank") Privacy Policy
-				|  for more information.
+			| then be prompted to log into #{application.name}. In case you're wondering: We won't share any information we get from your accounts with 
+			| anyone unless you request it. Read our 
+			a(href="/privacy", target="_blank") Privacy Policy
+			|  for more information.
 
 		.explain
 			h4 What is the Maelstrom Network?

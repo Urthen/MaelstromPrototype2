@@ -15,7 +15,7 @@ var AppPermission = new Schema({
 });
 
 AppPermission.methods.isValid = function isValid () {
-	return this.expires && this.expires > Date.now();
+	return (this.expires == null || this.expires === undefined) || this.expires > Date.now();
 };
 
 mongoose.model("AppPermission", AppPermission);
