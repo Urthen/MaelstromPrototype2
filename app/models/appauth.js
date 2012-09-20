@@ -2,10 +2,12 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	crypto = require('crypto'),
 	deferred = require('deferred'),
-	tokenService = require('../services/tokens');
+	tokenService = require('../services/tokens'),
+	resources = require('../services/resources');
 
 var AppPermission = new Schema({
 	created: {type: Date, default: Date.now},
+	auth: Schema.ObjectId,
 	expires: Date,
 	type: String,
 	description: String,
@@ -33,6 +35,7 @@ AppAuthorization.methods.addPermission = function addPermission(type, resourceId
 	permission.type = type;
 	permission.resourceId = resourceId;
 	permission.description = description;
+	permission.auth = this;
 	if (duration) {
 		permission.expires = new Date(Date.now().getTime() + duration * 60000);
 	}

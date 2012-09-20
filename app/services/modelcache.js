@@ -7,20 +7,23 @@ var ModelCache = function (preload) {
 	} else {
 		this.cache = {};
 	}
-}
+};
 
 ModelCache.prototype.findById = function(model, id) {
 	var def = deferred(),
 		modelCache;
-	if (model in cache) {
-		modelCache = cache[model];
+	if (model in this.cache) {
+		modelCache = this.cache[model];
 	} else {
 		modelCache = {};
-		cache[model] = modelCache;
+		this.cache[model] = modelCache;
 	}
 	if (id in modelCache) {
+		console.log("Cache hit:", model, id);
 		def.resolve(modelCache[id]);
 	} else {
+		console.log("Cache miss:", model, id);
+		// Dont use my custom pFindById as we can't be sure it exists for this particular model.
 		mongoose.model(model).findById(id, function(err, obj) {
 			if (err) {
 				def.resolve(err);
@@ -30,7 +33,7 @@ ModelCache.prototype.findById = function(model, id) {
 			}
 		});
 	}
-	return def;
-}
+	return def.promise;
+};
 
 module.exports.ModelCache = ModelCache;
