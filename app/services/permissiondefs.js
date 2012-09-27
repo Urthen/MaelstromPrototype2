@@ -3,13 +3,13 @@ var permissionDefsMap = {
 	"basicInfo": {
 		"preferredName": "Your preferred name."
 	}
-}
+};
 
 function getDescription(type, resourceId) {
 	if (!resourceId) {
 		// we were passed in an un-split identifier
 		var permission = type;
-		type = permission.split('.')[0],
+		type = permission.split('.')[0];
 		resourceId = permission.split('.')[1];
 	}
 

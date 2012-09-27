@@ -25,7 +25,7 @@ AppPermission.methods.getDescription = function getDescription () {
 	} else {
 		return permissiondefs.getDescription(this.type, this.resourceId);
 	}
-}
+};
 
 mongoose.model("AppPermission", AppPermission);
 
