@@ -30,9 +30,11 @@ exports.createAppPage = function(req, res) {
 	}
 
 	try {
-		validator.check(domain).is(/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}$/);
+		if (domain != 'localhost') {
+			validator.check(domain).is(/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}$/);
+		}
 	} catch(e) {
-		errors.push('Domain name must be in sub.domain.tld format.');
+		errors.push('Domain name must be in sub.domain.tld format or localhost.');
 	}
 
 	try {

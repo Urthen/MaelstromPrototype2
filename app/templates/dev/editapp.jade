@@ -36,7 +36,9 @@ block content
 			input(name='domain', size='50', value=app.domain)
 			.hint All redirect URLs must be on this domain for security purposes. Must be 
 				em sub.domain.tld
-				|  format.
+				|  format, or 
+				em localhost
+				| .
 		.formrow
 			label(for='redirect') Redirect URL:
 			input(name='redirect', size='50', value=app.redirect)
