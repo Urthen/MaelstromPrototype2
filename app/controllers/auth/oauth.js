@@ -4,7 +4,8 @@ var url = require('url'),
 	AppAuthorization = mongoose.model("AppAuthorization"),
 	Application = mongoose.model("Application"),
 	User = mongoose.model("User"),
-	tokenService = require("../../services/tokens");
+	tokenService = require("../../services/tokens"),
+	permissiondefs = require("../../services/permissiondefs");
 
 exports.login = function oauthLogin (req, res) {
 	if (req.user && req.user.temporary) {
@@ -19,7 +20,8 @@ exports.login = function oauthLogin (req, res) {
 			callback: validator.sanitize(req.query.redirect_uri).xss(),
 			redirect: encodeURIComponent('/auth/oauth/authorize?client_id=' + validator.sanitize(req.query.client_id).xss() + 
 				"&redirect_uri=" + encodeURIComponent(validator.sanitize(req.query.redirect_uri).xss())),
-			newAuthorization: true
+			newAuthorization: true,
+			permissiondefs: permissiondefs
 		},
 		parsed = url.parse(req.query.redirect_uri);
 
@@ -31,15 +33,15 @@ exports.login = function oauthLogin (req, res) {
 	}
 
 	if(req.user) {
-		var requestedPermissions = ["basicInfo/preferredName"];
+		var requestedPermissions = req.query.scope? req.query.scope.split(',') : [];
 
 		AppAuthorization.pFindOne({user: req.user.id, application: req.application.id})(function (auth) {
 			if(auth && auth.valid) {
 				var requestedPermission, existingPermission, type, rid, newPermissions = [], found = false;
 				for(var i = 0; i < requestedPermissions.length; i++) {
 					requestedPermission = requestedPermissions[i];
-					type = requestedPermission.split('/')[0];
-					rid = requestedPermission.split('/')[1];
+					type = requestedPermission.split('.')[0];
+					rid = requestedPermission.split('.')[1];
 					found = false;
 					for (var ii = 0; ii < auth.permissions.length; ii++) {
 						existingPermission = auth.permissions[i];
@@ -84,7 +86,13 @@ exports.login = function oauthLogin (req, res) {
 
 exports.confirm = function oauthConfirm(req, res) {
 	req.user.addAppAuth(req.application)(function (permission) {
-		permission.addPermission("basicInfo", "preferredName", "Your preferred name");
+		var newPermissions = req.body.approved_scope ? req.body.approved_scope.split(",") : [],
+			newPermission;
+		for(var i = 0; i < newPermissions.length; i++) {
+			newPermission = newPermissions[i];
+			permission.addPermission(newPermission);	
+		}
+		
 		return permission.pSave();		
 	})(function (permission){
 		return permission.getAuthCode();		

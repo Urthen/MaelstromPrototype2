@@ -3,7 +3,8 @@ var mongoose = require('mongoose'),
 	crypto = require('crypto'),
 	deferred = require('deferred'),
 	tokenService = require('../services/tokens'),
-	resources = require('../services/resources');
+	resources = require('../services/resources'),
+	permissiondefs = require('../services/permissiondefs');
 
 var AppPermission = new Schema({
 	created: {type: Date, default: Date.now},
@@ -18,6 +19,14 @@ AppPermission.methods.isValid = function isValid () {
 	return (this.expires == null || this.expires === undefined) || this.expires > Date.now();
 };
 
+AppPermission.methods.getDescription = function getDescription () {
+	if (this.description) {
+		return this.description; 
+	} else {
+		return permissiondefs.getDescription(this.type, this.resourceId);
+	}
+}
+
 mongoose.model("AppPermission", AppPermission);
 
 var AppPermissionModel = mongoose.model("AppPermission"),
@@ -30,8 +39,10 @@ var AppPermissionModel = mongoose.model("AppPermission"),
 		permissions: [AppPermission]
 	});
 
-AppAuthorization.methods.addPermission = function addPermission(type, resourceId, description, duration) {
-	var permission = new AppPermissionModel();
+AppAuthorization.methods.addPermission = function addPermission(identifier, description, duration) {
+	var permission = new AppPermissionModel(),
+		type = identifier.split('.')[0],
+		resourceId = identifier.split('.')[1];
 	permission.type = type;
 	permission.resourceId = resourceId;
 	permission.description = description;

@@ -27,7 +27,7 @@ block content
 							li An identifier unique to this application 
 								span.hint (This permission cannot be revoked.)
 							for permission in application.permission.permissions
-								li #{permission.description}
+								li #{permission.getDescription()}
 									a.button.minor.negative(href="/apps/revokePermission/" + application.permission.id + "/" + permission.id) Revoke
 
 	else
