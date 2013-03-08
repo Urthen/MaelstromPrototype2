@@ -15,6 +15,7 @@ module.exports = function (app) {
 		app.use(express.bodyParser());
 		app.use(express.methodOverride());
 		app.use(express.cookieParser());
+		app.use(express.limit('4mb'));
 
 		// Sessions use Redis since we don't really care if they expire when we restart.
 		// Worst that will happen is that everyone gets logged out.

@@ -1,6 +1,8 @@
 var emailverify = require('./emailverify'),
 	deferred = require('deferred'),
-	validator = require('validator');
+	validator = require('validator'),
+	fs = require('fs'),
+	awsservice = require('../services/awsservice');
 
 exports.showProfile = function(req, res) {
 	res.render('profile/profile');
@@ -85,6 +87,37 @@ exports.editProfile = function(req, res) {
 	} else {
 		res.render('profile/edit');
 	}
+};
+
+exports.editProfilePic = function(req, res) {
+	if (req.route.method === 'post') {
+		var buf = fs.readFileSync(req.files.profilePic.path);
+
+		awsservice.uploadFile(buf, "profilepics/" + req.user.id + "_pic", "image/jpeg", function(err, data) {
+			if (err == null) {
+				res.redirect('profile/edit');
+			} else {
+				req.session.messages.errors = ["Error saving profile picture."];
+				console.log("error saving profile pic:", err);
+				res.render('profile/editpic');
+			}
+		});
+		
+	} else {
+		res.render('profile/editpic');
+	}
+};
+
+exports.getProfilePic = function(req, res) {
+	awsservice.getFile("profilepics/" + req.user.id + "_pic", function(err, data) {
+		if (err == null) {
+			res.setHeader('Content-Type', data["Headers"]["content-type"]);
+			res.send(data["Body"]);
+		} else {
+			console.log("error retrieving profile pic:", err);
+			res.send("");
+		}
+	});
 };
 
 exports.linkedProfiles = function(req, res) {

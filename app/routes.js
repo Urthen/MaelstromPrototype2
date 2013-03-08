@@ -46,6 +46,9 @@ module.exports = function(app){
 	app.get('/profile', helpers.requireLogin, profileController.showProfile);
 	app.get('/profile/edit', helpers.requireLogin, profileController.editProfile);
 	app.post('/profile/edit', helpers.requireLogin, profileController.editProfile);	
+	app.get('/profile/editpic', helpers.requireLogin, profileController.editProfilePic);
+	app.get('/profile/getpic', helpers.requireLogin, profileController.getProfilePic);
+	app.post('/profile/editpic', helpers.requireLogin, profileController.editProfilePic);
 	app.get('/profile/linked', helpers.requireLogin, profileController.linkedProfiles);
 
 	// Email verification process

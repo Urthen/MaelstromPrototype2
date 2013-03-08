@@ -18,7 +18,8 @@
       "connect-redis": "1.4.1",
       "email-templates": "0.0.2",
       "validator": "0.4.11",
-      "express-validator": ">= 0.0.1"
+      "express-validator": ">= 0.0.1",
+      "awssum": ">= 0.12.2"
   }
   , "devDependencies" : {  
       "grunt-less": ">= 0.0.1"

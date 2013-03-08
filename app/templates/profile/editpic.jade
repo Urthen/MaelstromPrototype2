@@ -1,0 +1,28 @@
+extends ../base
+
+block append scripts
+	script(type="text/javascript", src="/js/editprofile.js")
+
+block prepend nav
+	- var location = "Profile";
+	- var sublocation = "Edit";
+
+block content
+
+	h2 Edit Profile Picture
+
+	if messages.errors
+		p
+			each error in messages.errors
+				.indicator.negative= error
+
+	form#ProfileForm(method="POST", action="/profile/editpic", enctype="multipart/form-data")
+		input(type="hidden", name="_csrf", value=token)
+		h4 Upload new...
+		.inforow	
+			label(for="profilePic") Select Picture: 
+			input(name="profilePic", type="file")
+
+		.actionbuttons
+			a.button.affirmative#SaveButton(href="#") Save
+			a.button.negative(href="/profile") Cancel
