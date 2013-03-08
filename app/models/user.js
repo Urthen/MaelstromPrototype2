@@ -28,6 +28,7 @@ var UserEmailModel = mongoose.model('UserEmail'),
 		name: String,
 		emails: [UserEmail],
 		credentials: [ForeignCredential],
+		hasPic: {type: Boolean, default: false},
 		created: {type: Date, default: Date.now},
 		accessed: {type: Date, default: Date.now},
 		temporary: {type: Boolean, default: true}

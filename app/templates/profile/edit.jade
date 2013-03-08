@@ -11,9 +11,11 @@ block content
 
 	h2 Edit Profile
 
-	img(src="/profile/getpic", height="100px")
-
-	a.button(href="/profile/editpic") Change Picture
+	if user.hasPic
+		img(src="/profile/getpic", height="100px")
+		a.button(href="/profile/editpic") Change Picture
+	else
+		a.button(href="/profile/editpic") Upload Picture
 
 	form#ProfileForm(method="POST", action="/profile/edit")
 		input(type="hidden", name="_csrf", value=token)

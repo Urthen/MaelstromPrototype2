@@ -95,7 +95,17 @@ exports.editProfilePic = function(req, res) {
 
 		awsservice.uploadFile(buf, "profilepics/" + req.user.id + "_pic", "image/jpeg", function(err, data) {
 			if (err == null) {
-				res.redirect('profile/edit');
+				if (req.user.hasPic == false) {
+					req.user.hasPic = true;
+					req.user.pSave()(function() {
+						res.redirect('/profile/edit');
+					}, function(err) {
+						console.log("error saving user:", err);
+						res.redirect('/profile/edit');
+					}); 
+				} else {
+					res.redirect('/profile/edit');
+				}
 			} else {
 				req.session.messages.errors = ["Error saving profile picture."];
 				console.log("error saving profile pic:", err);
